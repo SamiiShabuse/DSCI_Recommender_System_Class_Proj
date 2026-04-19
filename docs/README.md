@@ -10,6 +10,11 @@ We are building a recommender system that helps Instagram influencers decide wha
 
 The first version should focus on metadata rather than raw images because the dataset is large and image processing would add a lot of complexity too early.
 
+Primary dataset links:
+
+- Dataset page: https://sites.google.com/site/sbkimcv/dataset/instagram-influencer-dataset
+- Google Drive: https://drive.google.com/drive/folders/1ISiSH4-aM6kP_0lKQYejpk1sa6Jei-7e
+
 Primary inputs:
 
 - Influencer profile data
@@ -30,6 +35,12 @@ Primary outputs:
 1. Content-based recommendations using post text and engagement signals.
 2. Collaborative filtering using behavior patterns across influencers.
 3. A hybrid approach that combines both methods.
+
+## Evaluation Targets
+
+- Engagement-based outcomes (likes, comments, normalized engagement rate)
+- Top-N ranking quality (Precision@K, Recall@K, NDCG@K)
+- Comparative performance across content-based, collaborative filtering, and hybrid models
 
 ## Slow Build Plan
 
