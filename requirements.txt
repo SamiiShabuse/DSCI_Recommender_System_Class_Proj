@@ -1,2 +1,1 @@
-# Project dependencies
-# Add runtime packages here, one per line.
+pip==26.0.1
