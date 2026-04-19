@@ -2,6 +2,10 @@
 
 This folder collects the project brief, design notes, and implementation decisions for the Instagram influencer recommender system.
 
+## Planning Docs
+
+- 8-week execution roadmap: [Milestones.md](Milestones.md)
+
 ## Project Summary
 
 We are building a recommender system that helps Instagram influencers decide what kind of content to create next. The system will use influencer metadata and post metadata to recommend content strategies or post types based on engagement patterns.
