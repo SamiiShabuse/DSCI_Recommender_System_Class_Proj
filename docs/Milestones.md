@@ -51,11 +51,13 @@ Tasks:
 - Standardize timestamps, text fields, and engagement fields.
 - Handle missing values and obvious outliers.
 - Create versioned processed dataset snapshots.
+- Set up Google Colab + Drive data workflow for large-scale preprocessing.
 
 Deliverables:
 
 - Reproducible preprocessing script(s).
 - Data quality report (row counts, null rates, key distributions).
+- Colab runbook with exact commands for setup and subset generation.
 
 Exit Criteria:
 
