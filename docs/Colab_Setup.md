@@ -2,6 +2,62 @@
 
 The raw dataset is too large for many local machines, so use a Colab-first workflow and keep raw data in Google Drive.
 
+## Recommended First Pass
+
+For the easiest first version, keep the project metadata-only and ignore the image files for now.
+
+Use this target:
+
+- Recommend an Instagram content strategy from past metadata and engagement.
+
+Use this as the first working dataset scope:
+
+- `influencers.txt`
+- `JSON-Image_files_mapping.txt`
+- one metadata folder such as `Post_metadata/`
+
+The first notebook goal is simply to load the data, inspect it, and define a small subset.
+
+## 0. Set Up Path Variables
+
+In Colab, after mounting Drive, define one base path and build everything from it:
+
+```python
+from pathlib import Path
+
+DATA_PATH = Path("/content/drive/MyDrive/dsci351_data")
+INFLUENCERS_PATH = DATA_PATH / "influencers.txt"
+MAPPING_PATH = DATA_PATH / "JSON-Image_files_mapping.txt"
+METADATA_DIR = DATA_PATH / "Post_metadata"
+```
+
+If your folder uses a different name, change only `DATA_PATH`.
+
+## 1. First Checks
+
+Before modeling, verify that the basic files exist:
+
+```python
+print(INFLUENCERS_PATH.exists())
+print(MAPPING_PATH.exists())
+print(METADATA_DIR.exists())
+```
+
+Then list the first few items:
+
+```python
+print([p.name for p in DATA_PATH.iterdir()][:20])
+```
+
+## 2. First Goal
+
+The first real output should be a small, clean subset plus a dataset summary. That means:
+
+- confirm row counts and categories in `influencers.txt`
+- confirm how many mapping rows exist
+- confirm whether the metadata folder is present and readable
+- build a small subset for faster experimentation
+
 ## 1. Put Data in Google Drive
 
 Create a folder like this in Drive:
