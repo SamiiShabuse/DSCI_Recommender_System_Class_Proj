@@ -109,7 +109,20 @@ artifacts/
     engagement_by_category.png
 ```
 
-Processed parquets are gitignored (large). Results and figures are tracked in git for report/slide use.
+Processed parquets are gitignored (large). Per-scale results and comparison charts live under:
+
+```
+artifacts/runs/n10000/   # 10k run (not overwritten by 20k/50k)
+artifacts/runs/n20000/
+artifacts/runs/n50000/
+artifacts/comparisons/   # scale_model_comparison.csv, scale_summary.csv, chart
+```
+
+Run all scales at once:
+
+```bash
+python scripts/run_scale_benchmark.py --synthetic --scales 10000 20000 50000
+```
 
 ## Colab Full Run (10k posts)
 

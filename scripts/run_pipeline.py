@@ -10,7 +10,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.pipeline import PipelineConfig, run_pipeline
+from src.pipeline import PipelineConfig, aggregate_scale_comparisons, run_pipeline
 
 
 def parse_args() -> argparse.Namespace:
@@ -70,6 +70,11 @@ def parse_args() -> argparse.Namespace:
         default=42,
         help="Random seed for synthetic generation.",
     )
+    parser.add_argument(
+        "--compare-scales",
+        action="store_true",
+        help="After this run, rebuild artifacts/comparisons/ from all runs under artifacts/runs/.",
+    )
     return parser.parse_args()
 
 
@@ -95,15 +100,23 @@ def main() -> None:
     outputs = run_pipeline(config)
 
     print("\n=== Pipeline Complete ===")
+    print(f"Run directory: {outputs['run_output_dir']}")
     print(f"Posts base: {outputs['artifact_paths']['posts_base']}")
     print(f"Model comparison: {outputs['results_path']}")
-    print(f"Split summary: {outputs['split_summary_path']}")
+    print(f"Run summary: {outputs['run_summary_path']}")
+    print(f"Runtime: {outputs['runtime_seconds']:.1f}s")
     print(f"Hybrid alpha: {outputs['hybrid_alpha']:.2f}")
     print("\nMetrics:")
     print(outputs["results_df"].to_string(index=False))
     print("\nFigures:")
     for path in outputs["figure_paths"]:
         print(f"- {path}")
+
+    if args.compare_scales:
+        print("\n=== Updating scale comparison ===")
+        comparison_paths = aggregate_scale_comparisons(args.output_dir)
+        for name, path in comparison_paths.items():
+            print(f"{name}: {path}")
 
 
 if __name__ == "__main__":

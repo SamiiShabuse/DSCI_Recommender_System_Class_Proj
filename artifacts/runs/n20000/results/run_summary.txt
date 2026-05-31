@@ -1,0 +1,10 @@
+target_posts=20000
+posts_total=20000
+train_posts=16000
+test_posts=4000
+unique_influencers=1000
+unique_strategies=144
+k=5
+hybrid_alpha=0.3
+runtime_seconds=98.0
+run_dir=C:\Users\sshab\Documents\School\DSCI351\DSCI_Recommender_System_Class_Proj\artifacts\runs\n20000
