@@ -163,6 +163,7 @@ We ran three **scale benchmarks** to answer:
 | 10k | `artifacts/runs/n10000/` | 10,000 | ~30 sec |
 | 20k | `artifacts/runs/n20000/` | 20,000 | ~98 sec |
 | 50k | `artifacts/runs/n50000/` | 50,000 | ~8 min |
+| 100k | `artifacts/runs/n100000/` | 100,000 | ~32 min |
 
 **Combined comparison (for slides / appendix):**
 
@@ -212,7 +213,7 @@ Output: `artifacts/runs/n10000/`
 ### All scales + comparison table
 
 ```bash
-python scripts/run_scale_benchmark.py --synthetic --scales 10000 20000 50000
+python scripts/run_scale_benchmark.py --synthetic --scales 10000 20000 50000 100000
 ```
 
 ### Colab (real data — use for final report numbers)
