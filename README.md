@@ -12,14 +12,15 @@ pip install -r requirements.txt
 python scripts/run_pipeline.py --synthetic
 ```
 
-Outputs land in `artifacts/`:
+Outputs land in `artifacts/runs/n{target_posts}/` (e.g. `n10000`, `n20000`):
 
 | Path | Description |
 |------|-------------|
-| `artifacts/processed/posts_base_*.parquet` | Modeling-ready post table |
-| `artifacts/processed/interaction_matrix_*.parquet` | Influencer × strategy matrix |
-| `artifacts/results/model_comparison.csv` | Phase 2 metrics for all 5 models |
-| `artifacts/figures/model_comparison.png` | Metrics chart for report/slides |
+| `artifacts/runs/n*/processed/posts_base_*.parquet` | Modeling-ready post table |
+| `artifacts/runs/n*/processed/interaction_matrix_*.parquet` | Influencer × strategy matrix |
+| `artifacts/runs/n*/results/model_comparison.csv` | Metrics for all 5 models |
+| `artifacts/runs/n*/figures/model_comparison.png` | Metrics chart for report/slides |
+| `artifacts/comparisons/` | Multi-scale benchmark tables and charts |
 
 ## Run on Real Colab Data
 
@@ -37,30 +38,16 @@ python scripts/run_pipeline.py \
 
 ## Project Structure
 
-```
-src/
-  preprocess.py       # Metadata parsing, strategy labels, engagement scores
-  baselines.py        # Global + category popularity models
-  collaborative.py    # User-based collaborative filtering
-  content_based.py    # TF-IDF caption recommender
-  hybrid.py           # Weighted CF + content blend
-  evaluation.py       # Time split, Precision@K, NDCG@K
-  demo_data.py        # Synthetic local data generator
-  pipeline.py         # End-to-end orchestration
-scripts/
-  run_pipeline.py     # Main entry point (Phase 1 + 2)
-  build_training_subset.py
-  dataset_summary.py
-  preview_dataset.py
-notebooks/
-  01_pipeline_and_models.ipynb
-docs/
-  Project_Proposal.md
-  Milestones.md
-  Final_Submission.md
-  Pipeline.md
-  Colab_Setup.md
-```
+Each folder has a README explaining its purpose:
+
+| Folder | README | Contents |
+|--------|--------|----------|
+| `src/` | [src/README.md](src/README.md) | Python modules: preprocess, 5 models, evaluation, pipeline |
+| `scripts/` | [scripts/README.md](scripts/README.md) | CLI entry points (`run_pipeline.py`, benchmarks, data tools) |
+| `notebooks/` | [notebooks/README.md](notebooks/README.md) | Jupyter notebooks (primary: `01_pipeline_and_models.ipynb`) |
+| `docs/` | [docs/README.md](docs/README.md) | Proposal, pipeline guide, submission checklist, Colab setup |
+| `data/` | [data/README.md](data/README.md) | Raw dataset files (gitignored) and dataset snapshot |
+| `artifacts/` | — | Generated metrics, figures, and processed tables (see `scripts/README.md`) |
 
 ## Models Evaluated
 
@@ -79,8 +66,9 @@ Local `data/` folder (gitignored): `influencers.txt`, mapping files, optional sa
 
 ## Documentation
 
-- [How it works (team guide)](docs/How_It_Works.md) — start here if you're new to the project
+Start at [docs/README.md](docs/README.md) for a full index. Key docs:
+
+- [How it works](docs/How_It_Works.md) — plain-language overview for graders and teammates
 - [Pipeline guide](docs/Pipeline.md) — modules, outputs, reproduction
-- [Milestones](docs/Milestones.md) — project status and phase checklist
 - [Final submission](docs/Final_Submission.md) — report outline and Canvas checklist
 - [Colab setup](docs/Colab_Setup.md) — large-data workflow

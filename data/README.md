@@ -1,6 +1,8 @@
-# Data Folder
+# Data Folder (`data/`)
 
 Raw and processed inputs for the Instagram influencer recommender system. Large files are gitignored; clone or download them locally as needed.
+
+**Used by:** `scripts/run_pipeline.py`, `scripts/dataset_summary.py`, and `src/preprocess.py`. See [scripts/README.md](../scripts/README.md) and [src/README.md](../src/README.md).
 
 ## Official sources
 
@@ -75,3 +77,12 @@ image_files: ['1188140434601337485.jpg']
 python scripts/dataset_summary.py
 python scripts/preview_dataset.py
 ```
+
+## Related folder guides
+
+| Folder | README |
+|--------|--------|
+| Documentation | [docs/README.md](../docs/README.md) |
+| Source code | [src/README.md](../src/README.md) |
+| Scripts | [scripts/README.md](../scripts/README.md) |
+| Notebooks | [notebooks/README.md](../notebooks/README.md) |
