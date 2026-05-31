@@ -12,11 +12,26 @@ from src.data_import import DatasetPaths, find_metadata_dir, list_metadata_files
 
 
 def _top_categories(influencers: list[dict[str, object]], n: int = 10) -> list[tuple[str, int]]:
+    """
+    Gets the top categories from the influencers.
+    Args:
+        influencers: A list of influencers.
+        n: The number of categories to get.
+    Returns:
+        A list of tuples of the top categories and their counts.
+    """
     counts = Counter(str(row.get("Category", "unknown")) for row in influencers)
     return counts.most_common(n)
 
 
 def main() -> None:
+    """
+    Runs the dataset summary.
+    Args:
+        None
+    Returns:
+        None
+    """
     dataset = DatasetPaths(PROJECT_ROOT / "data")
 
     influencers = load_influencers(dataset.influencers)

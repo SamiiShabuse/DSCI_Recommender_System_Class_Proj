@@ -14,6 +14,11 @@ from src.pipeline import PipelineConfig, aggregate_scale_comparisons, run_pipeli
 
 
 def parse_args() -> argparse.Namespace:
+    """
+    Parses the command line arguments.
+    Returns:
+        The parsed arguments.
+    """
     parser = argparse.ArgumentParser(
         description="Run scale benchmarks without overwriting prior results."
     )
@@ -63,6 +68,13 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    """
+    Runs the scale benchmark.
+    Args:
+        None
+    Returns:
+        None
+    """
     args = parse_args()
 
     if not args.compare_only:

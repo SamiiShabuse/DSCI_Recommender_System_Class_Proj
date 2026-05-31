@@ -19,6 +19,11 @@ from src.data_import import (
 
 
 def parse_args() -> argparse.Namespace:
+    """
+    Parses the command line arguments.
+    Returns:
+        The parsed arguments.
+    """
     parser = argparse.ArgumentParser(description="Preview local influencer dataset files.")
     parser.add_argument(
         "--extract-sample-images",
@@ -29,6 +34,13 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    """
+    Runs the dataset preview.
+    Args:
+        None
+    Returns:
+        None
+    """
     args = parse_args()
     dataset = DatasetPaths(PROJECT_ROOT / "data")
 

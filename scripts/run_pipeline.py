@@ -1,4 +1,4 @@
-"""Run the full recommender pipeline (Phase 1 + Phase 2)."""
+"""Run the full recommender pipeline"""
 
 from __future__ import annotations
 
@@ -14,6 +14,11 @@ from src.pipeline import PipelineConfig, aggregate_scale_comparisons, run_pipeli
 
 
 def parse_args() -> argparse.Namespace:
+    """
+    Parses the command line arguments.
+    Returns:
+        The parsed arguments.
+    """
     parser = argparse.ArgumentParser(
         description="Build processed datasets, train recommenders, and evaluate all models."
     )
@@ -79,6 +84,13 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    """
+    Runs the full recommender pipeline.
+    Args:
+        None
+    Returns:
+        None
+    """
     args = parse_args()
 
     if not any([args.posts_parquet, args.extracted_metadata_dir, args.synthetic]):
@@ -99,7 +111,7 @@ def main() -> None:
 
     outputs = run_pipeline(config)
 
-    print("\n=== Pipeline Complete ===")
+    print("\n=== Pipeline Completed ===")
     print(f"Run directory: {outputs['run_output_dir']}")
     print(f"Posts base: {outputs['artifact_paths']['posts_base']}")
     print(f"Model comparison: {outputs['results_path']}")

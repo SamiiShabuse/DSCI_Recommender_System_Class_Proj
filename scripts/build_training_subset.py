@@ -17,6 +17,11 @@ from src.data_import import DatasetPaths, find_metadata_dir, load_influencers
 
 
 def parse_args() -> argparse.Namespace:
+    """
+    Parses the command line arguments.
+    Returns:
+        The parsed arguments.
+    """
     parser = argparse.ArgumentParser(
         description=(
             "Build a manageable influencer/post subset for model development in resource-limited "
@@ -74,6 +79,16 @@ def choose_influencers(
     min_followers: int,
     seed: int,
 ) -> list[dict[str, Any]]:
+    """
+    Chooses influencers based on the number of followers.
+    Args:
+        influencers: A list of influencers.
+        num_influencers: The number of influencers to choose.
+        min_followers: The minimum number of followers to choose.
+        seed: The random seed to use.
+    Returns:
+        A list of chosen influencers.
+    """
     eligible = [row for row in influencers if int(row["#Followers"]) >= min_followers]
     if not eligible:
         raise ValueError(
@@ -91,6 +106,14 @@ def choose_influencers(
 
 
 def parse_mapping_line(line: str, line_number: int) -> tuple[str, str, list[str]]:
+    """
+    Parses a mapping line.
+    Args:
+        line: The line to parse.
+        line_number: The line number to use for error messages.
+    Returns:
+        A tuple of the influencer name, metadata file, and image files.
+    """
     parts = line.split(maxsplit=2)
     if len(parts) != 3:
         raise ValueError(f"Unexpected mapping format on line {line_number}: {line[:120]}")
@@ -104,6 +127,13 @@ def parse_mapping_line(line: str, line_number: int) -> tuple[str, str, list[str]
 
 
 def parse_metadata_payload(file_path: Path) -> Any:
+    """
+    Parses a metadata payload.
+    Args:
+        file_path: The path to the metadata file.
+    Returns:
+        The parsed metadata payload.
+    """
     raw_text = file_path.read_text(encoding="utf-8", errors="replace").strip()
     if not raw_text:
         return {}
@@ -125,6 +155,16 @@ def build_selected_mapping(
     selected_usernames: set[str],
     max_posts_per_influencer: int,
 ) -> tuple[set[str], int, int, int]:
+    """
+    Builds a selected mapping.
+    Args:
+        mapping_path: The path to the mapping file.
+        output_csv_path: The path to the output CSV file.
+        selected_usernames: A set of selected usernames.
+        max_posts_per_influencer: The maximum number of posts per influencer.
+    Returns:
+        A tuple of the metadata files needed, the number of rows read, the number of rows kept, and the number of bad rows.
+    """
     metadata_files_needed: set[str] = set()
     kept_rows = 0
     skipped_bad_rows = 0
@@ -183,6 +223,15 @@ def build_selected_metadata_jsonl(
     metadata_files_needed: set[str],
     output_jsonl_path: Path,
 ) -> tuple[int, int]:
+    """
+    Builds a selected metadata JSONL file.
+    Args:
+        metadata_dir: The path to the metadata directory.
+        metadata_files_needed: A set of metadata files needed.
+        output_jsonl_path: The path to the output JSONL file.
+    Returns:
+        A tuple of the number of matched files and the number of missing files.
+    """
     matched_files = 0
     missing_files = 0
     remaining = set(metadata_files_needed)
@@ -217,6 +266,13 @@ def build_selected_metadata_jsonl(
 
 
 def main() -> None:
+    """
+    Runs the training subset builder.
+    Args:
+        None
+    Returns:
+        None
+    """
     args = parse_args()
 
     dataset = DatasetPaths(args.data_dir)
