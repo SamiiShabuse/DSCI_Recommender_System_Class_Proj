@@ -15,12 +15,11 @@ This plan reflects **actual repo progress** as of May 2026 and defines the remai
 | User-based CF | **Done** | `src/collaborative.py` |
 | Content-based recommender | **Done** | `src/content_based.py` |
 | Hybrid model | **Done** | `src/hybrid.py` |
-| Train/test split + metrics | **Done** | `src/evaluation.py` → `artifacts/results/model_comparison.csv` |
-| Reproducible pipeline | **Done** | `scripts/run_pipeline.py`, `src/pipeline.py` |
-| Consolidated notebook | **Done** | `notebooks/01_pipeline_and_models.ipynb` |
-| Pipeline documentation | **Done** | `docs/Pipeline.md`, updated README |
-| Processed parquets (large) | **Done (gitignored)** | `artifacts/processed/` |
-| Metrics + figures | **Done** | `artifacts/results/`, `artifacts/figures/` |
+| Train/test split + metrics | **Done** | `src/evaluation.py` → `artifacts/runs/n*/results/` |
+| Scale benchmarks (10k / 20k / 50k) | **Done** | `artifacts/comparisons/` |
+| Reproducible pipeline | **Done** | `scripts/run_pipeline.py`, `run_scale_benchmark.py` |
+| Team guide | **Done** | `docs/How_It_Works.md` |
+| Metrics + figures | **Done** | Per-run under `artifacts/runs/n*/` |
 | Final report (PDF) | **Not done** | Phase 3 |
 | Presentation slides | **Not done** | Phase 3 |
 
@@ -85,9 +84,11 @@ Tasks:
 - [x] Build time-based train/test split per influencer.
 - [x] Define relevant test items as pseudo-rating ≥ 5.
 - [x] Run comparison table: Global | Category | CF | Content-based | Hybrid.
-- [x] Save `artifacts/results/model_comparison.csv` and figures in `artifacts/figures/`.
+- [x] Save per-scale results under `artifacts/runs/n{target}/` and comparison under `artifacts/comparisons/`.
 
 **Exit criteria:** Metrics reproducible via `scripts/run_pipeline.py`. Re-run on real 10k Colab data for final report numbers.
+
+**Team guide:** [How_It_Works.md](How_It_Works.md) explains the process for teammates.
 
 ---
 
@@ -163,11 +164,16 @@ The original week-by-week plan assumed starting from scratch. Mapped to today:
 | Week 3: Features + EDA | **Complete** (in notebook) |
 | Week 4: Baselines | **Complete** (in notebook) |
 | Week 5: Collaborative filtering | **Complete** (in notebook) |
-| Week 6: Hybrid + ablations | **Not started** |
-| Week 7: Final evaluation + report | **Not started** |
+| Week 6: Hybrid + ablations | **Complete** (hybrid + scale comparison) |
+| Week 7: Final evaluation + report | **Partial** (metrics done; report/slides pending) |
 | Week 8: Polish + submission | **Not started** |
 
-Focus all remaining effort on **Phases 2–4** above.
+Focus remaining effort on **Phases 3–4** (report, slides, Canvas submission).
+
+## Related Docs
+
+- [How_It_Works.md](How_It_Works.md) — teammate guide: what the pipeline does and what 10k/20k/50k runs mean
+- [Pipeline.md](Pipeline.md) — technical commands and module reference
 
 ---
 

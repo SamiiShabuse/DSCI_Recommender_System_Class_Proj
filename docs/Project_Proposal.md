@@ -98,7 +98,7 @@ This gives creators concrete guidance (when to post, caption style, hashtag use,
 | 4 | **Content-based** | TF-IDF similarity on captions; recommend strategies from semantically similar high-performing posts |
 | 5 | **Hybrid** | Weighted combination of CF and content-based scores |
 
-Implementation status: models 1–3 complete in notebook; 4–5 planned for final submission.
+Implementation status: all five models implemented in `src/` and evaluated via `scripts/run_pipeline.py`. Scale benchmarks at 10k / 20k / 50k saved under `artifacts/runs/` (see [How_It_Works.md](How_It_Works.md)).
 
 ---
 
@@ -183,7 +183,8 @@ docs/                 # Proposal, milestones, submission guide
 | Strategy features + engagement scores | Done (`src/preprocess.py`) |
 | Baselines + user-based CF | Done (`src/baselines.py`, `src/collaborative.py`) |
 | Content-based + hybrid | Done (`src/content_based.py`, `src/hybrid.py`) |
-| Formal evaluation metrics | Done (`artifacts/results/model_comparison.csv`) |
+| Formal evaluation metrics | Done (`artifacts/runs/n*/results/model_comparison.csv`) |
+| Scale benchmarks (10k / 20k / 50k) | Done (`artifacts/comparisons/`) |
 | Report + slides | To do (Phase 3) |
 
 ---
@@ -212,6 +213,7 @@ docs/                 # Proposal, milestones, submission guide
 - Execution roadmap and remaining tasks: [Milestones.md](Milestones.md)
 - Final submission checklist and report outline: [Final_Submission.md](Final_Submission.md)
 - Pipeline documentation: [Pipeline.md](Pipeline.md)
+- Team guide (how it works): [How_It_Works.md](How_It_Works.md)
 
 ---
 

@@ -116,6 +116,8 @@ Before submitting the repo link, confirm:
 - [ ] No secrets or personal Drive paths hardcoded without comments
 - [ ] `.gitignore` keeps large raw data out of git (link to dataset instead)
 
+**Team guide:** [How_It_Works.md](How_It_Works.md) — share with teammates before writing the report.
+
 ---
 
 ## Submission Mapping

@@ -79,6 +79,7 @@ Local `data/` folder (gitignored): `influencers.txt`, mapping files, optional sa
 
 ## Documentation
 
+- [How it works (team guide)](docs/How_It_Works.md) — start here if you're new to the project
 - [Pipeline guide](docs/Pipeline.md) — modules, outputs, reproduction
 - [Milestones](docs/Milestones.md) — project status and phase checklist
 - [Final submission](docs/Final_Submission.md) — report outline and Canvas checklist
