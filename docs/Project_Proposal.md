@@ -2,7 +2,7 @@
 
 **Team:** Samii Shabuse, Savit Tumuluri, Han Truong  
 **Course:** DSCI351 — Recommender Systems  
-**Status:** Data pipeline and baseline/CF models implemented in Colab notebooks; evaluation, hybrid model, and final report in progress.
+**Status:** Phases 1–2 complete (`src/` pipeline + evaluation). Report and slides (Phase 3) in progress.
 
 ---
 
@@ -179,12 +179,12 @@ docs/                 # Proposal, milestones, submission guide
 | Milestone | Status |
 |-----------|--------|
 | Data access and mapping cleanup | Done |
-| Metadata parsing (10k sample) | Done (notebook) |
-| Strategy features + engagement scores | Done (notebook) |
-| Baselines + user-based CF | Done (notebook) |
-| Content-based + hybrid | To do |
-| Formal evaluation metrics | To do |
-| Report + slides | To do |
+| Metadata parsing (10k sample) | Done (`src/preprocess.py` + Colab) |
+| Strategy features + engagement scores | Done (`src/preprocess.py`) |
+| Baselines + user-based CF | Done (`src/baselines.py`, `src/collaborative.py`) |
+| Content-based + hybrid | Done (`src/content_based.py`, `src/hybrid.py`) |
+| Formal evaluation metrics | Done (`artifacts/results/model_comparison.csv`) |
+| Report + slides | To do (Phase 3) |
 
 ---
 
@@ -211,7 +211,7 @@ docs/                 # Proposal, milestones, submission guide
 
 - Execution roadmap and remaining tasks: [Milestones.md](Milestones.md)
 - Final submission checklist and report outline: [Final_Submission.md](Final_Submission.md)
-- Colab workflow: [Colab_Setup.md](Colab_Setup.md)
+- Pipeline documentation: [Pipeline.md](Pipeline.md)
 
 ---
 

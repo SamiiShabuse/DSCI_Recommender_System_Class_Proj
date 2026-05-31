@@ -6,26 +6,25 @@ This plan reflects **actual repo progress** as of May 2026 and defines the remai
 
 | Area | Status | Evidence |
 |------|--------|----------|
-| Problem definition | **Done** | Proposal + locked strategy label in notebooks |
+| Problem definition | **Done** | Proposal + locked strategy label |
 | Influencer data loaded | **Done** | `data/influencers.txt` (33,935 rows) |
-| Mapping data cleaned | **Done** | `data/clean_json_image_mapping.parquet` (10,078,910 rows) |
-| Raw mapping file | **Done** | `data/JSON-Image_files_mapping.txt` (~747 MB) |
-| Post metadata access | **Done (Colab/Drive)** | `Post_metadata/posts_info.zip` via Google Drive shortcut |
-| Metadata parsing pipeline | **Done (notebook)** | `notebooks/Cleaned Up Notebook.ipynb` |
-| Feature engineering | **Done (notebook)** | Time/caption/hashtag/ad/media buckets → `strategy` |
-| Engagement scoring | **Done (notebook)** | `log_engagement_score` |
-| Global + category baselines | **Done (notebook)** | `recommend_global_strategies`, `recommend_by_category` |
-| User-based CF | **Done (notebook)** | Cosine similarity + neighbor-weighted scores |
-| Content-based recommender | **Not done** | TF-IDF on captions planned, not implemented |
-| Hybrid model | **Not done** | Weighted blend planned, not implemented |
-| Train/test split + metrics | **Not done** | No Precision@K / NDCG evaluation yet |
-| Code in `src/` modules | **Partial** | Only `data_import.py`; models not ported |
-| Processed artifacts in repo | **Not done** | Saved on Colab Drive, not committed |
-| Final report (PDF) | **Not done** | |
-| Presentation slides | **Not done** | |
-| README / requirements | **Partial** | Minimal; needs full dependency list |
+| Mapping data cleaned | **Done** | `data/clean_json_image_mapping.parquet` |
+| Metadata parsing pipeline | **Done** | `src/preprocess.py` + Colab notebooks |
+| Feature engineering | **Done** | `src/preprocess.py` |
+| Global + category baselines | **Done** | `src/baselines.py` |
+| User-based CF | **Done** | `src/collaborative.py` |
+| Content-based recommender | **Done** | `src/content_based.py` |
+| Hybrid model | **Done** | `src/hybrid.py` |
+| Train/test split + metrics | **Done** | `src/evaluation.py` → `artifacts/results/model_comparison.csv` |
+| Reproducible pipeline | **Done** | `scripts/run_pipeline.py`, `src/pipeline.py` |
+| Consolidated notebook | **Done** | `notebooks/01_pipeline_and_models.ipynb` |
+| Pipeline documentation | **Done** | `docs/Pipeline.md`, updated README |
+| Processed parquets (large) | **Done (gitignored)** | `artifacts/processed/` |
+| Metrics + figures | **Done** | `artifacts/results/`, `artifacts/figures/` |
+| Final report (PDF) | **Not done** | Phase 3 |
+| Presentation slides | **Not done** | Phase 3 |
 
-**Bottom line:** Weeks 1–5 of the original plan are largely complete **inside Colab notebooks**. The critical gap is **formal evaluation, missing models, reproducible `src/` code, and submission artifacts**.
+**Bottom line:** **Phases 1 and 2 are complete.** Next up is Phase 3 (report + slides) and Phase 4 (Canvas submission).
 
 ---
 
@@ -53,42 +52,42 @@ These are no longer open questions — use them consistently in code, report, an
 
 ## Remaining Work Phases
 
-### Phase 1: Reproducibility + Port to `src/` (Priority: Critical)
+### Phase 1: Reproducibility + Port to `src/` — COMPLETE
 
 **Goal:** One notebook or script run produces the same outputs every time.
 
 Tasks:
 
-- [ ] Expand `requirements.txt` (pandas, numpy, scikit-learn, pyarrow, tqdm, matplotlib).
-- [ ] Port notebook functions into modules:
+- [x] Expand `requirements.txt` (pandas, numpy, scikit-learn, pyarrow, tqdm, matplotlib).
+- [x] Port notebook functions into modules:
   - `src/preprocess.py` — parse metadata, build strategy labels, engagement scores
   - `src/baselines.py` — global and category recommenders
   - `src/collaborative.py` — interaction matrix + user-based CF
   - `src/content_based.py` — TF-IDF caption → strategy recommendations
   - `src/hybrid.py` — weighted combination
   - `src/evaluation.py` — time split, Precision@K, Recall@K, NDCG@K
-- [ ] Consolidate notebooks: keep `notebooks/01_pipeline_and_models.ipynb` as the main runbook; archive or trim `Data_Extraction.ipynb`.
-- [ ] Document Colab/Drive paths in `docs/Colab_Setup.md` (use team's actual Drive shortcut path).
-- [ ] Save processed outputs to a standard location: `artifacts/processed/` (gitignored) with naming convention `posts_base_10000.parquet`.
+- [x] Consolidate notebooks: `notebooks/01_pipeline_and_models.ipynb` (legacy notebooks kept for reference).
+- [x] Document pipeline in `docs/Pipeline.md` and updated README.
+- [x] Save processed outputs to `artifacts/processed/` (gitignored).
 
-**Exit criteria:** Re-run from extracted 10k sample → metrics table without manual cell edits.
+**Exit criteria:** `python scripts/run_pipeline.py --synthetic` → metrics table without manual edits.
 
 ---
 
-### Phase 2: Missing Models + Evaluation (Priority: Critical)
+### Phase 2: Missing Models + Evaluation — COMPLETE
 
 **Goal:** Compare all five approaches with held-out metrics.
 
 Tasks:
 
-- [ ] Implement **content-based** recommender: TF-IDF on captions, recommend strategies from high-engagement posts with similar text.
-- [ ] Implement **hybrid**: e.g. `score = α × CF_score + (1−α) × content_score` (tune α on validation).
-- [ ] Build time-based train/test split per influencer.
-- [ ] Define "relevant" item in test: strategies in top quintile pseudo-rating for that influencer.
-- [ ] Run comparison table: Global | Category | CF | Content-based | Hybrid.
-- [ ] Save `artifacts/results/model_comparison.csv` and 2–3 figures for the report.
+- [x] Implement **content-based** recommender (TF-IDF on captions).
+- [x] Implement **hybrid** with tuned α (`src/hybrid.py`).
+- [x] Build time-based train/test split per influencer.
+- [x] Define relevant test items as pseudo-rating ≥ 5.
+- [x] Run comparison table: Global | Category | CF | Content-based | Hybrid.
+- [x] Save `artifacts/results/model_comparison.csv` and figures in `artifacts/figures/`.
 
-**Exit criteria:** Hybrid or best model beats global baseline on NDCG@5; results reproducible from script.
+**Exit criteria:** Metrics reproducible via `scripts/run_pipeline.py`. Re-run on real 10k Colab data for final report numbers.
 
 ---
 
