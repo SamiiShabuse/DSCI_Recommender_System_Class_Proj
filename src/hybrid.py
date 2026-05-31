@@ -1,4 +1,8 @@
-"""Weighted hybrid of collaborative filtering and content-based scores."""
+"""Weighted hybrid of collaborative filtering and content-based scores.
+
+Model: Hybrid
+What it does: Combines the scores from the collaborative filtering and content-based models.
+"""
 
 from __future__ import annotations
 
@@ -8,6 +12,13 @@ from src.content_based import ContentBasedRecommender
 
 
 def normalize_scores(scores: pd.Series) -> pd.Series:
+    """
+    Normalizes the scores to be between 0 and 1.
+    Args:
+        scores: A series of scores.
+    Returns:
+        A series of normalized scores.
+    """
     if scores.empty:
         return scores
     min_score = scores.min()
@@ -23,6 +34,16 @@ def build_cf_score_series(
     user_similarity_df: pd.DataFrame,
     n_neighbors: int = 10,
 ) -> pd.Series:
+    """
+    Builds a series of scores for each strategy by cosine similarity to the influencer's neighbors.
+    Args:
+        influencer_name: The name of the influencer to build scores for.
+        interaction_matrix: A dataframe of interaction matrix.
+        user_similarity_df: A dataframe of user similarity.
+        n_neighbors: The number of neighbors to consider.
+    Returns:
+        A series of scores for each strategy.
+    """
     if influencer_name not in interaction_matrix.index:
         return pd.Series(dtype=float)
 
@@ -49,6 +70,19 @@ def recommend_hybrid(
     alpha: float = 0.5,
     n_neighbors: int = 10,
 ) -> list[str]:
+    """
+    Recommends strategies by combining the scores from the collaborative filtering and content-based models.
+    Args:
+        influencer_name: The name of the influencer to recommend strategies for.
+        interaction_matrix: A dataframe of interaction matrix.
+        user_similarity_df: A dataframe of user similarity.
+        content_recommender: A fitted content-based recommender.
+        k: The number of strategies to recommend.
+        alpha: The weight of the collaborative filtering scores.
+        n_neighbors: The number of neighbors to consider.
+    Returns:
+        A list of recommended strategies.
+    """
     cf_scores = build_cf_score_series(
         influencer_name,
         interaction_matrix,
@@ -74,7 +108,19 @@ def tune_hybrid_alpha(
     k: int = 5,
     candidates: tuple[float, ...] = (0.3, 0.5, 0.7),
 ) -> float:
-    """Pick alpha that maximizes average hit-rate@K on a validation subset."""
+    """
+    Picks the alpha that maximizes the average hit-rate@K on a validation subset.
+    Args:
+        influencers: A list of influencers to tune the alpha for.
+        interaction_matrix: A dataframe of interaction matrix.
+        user_similarity_df: A dataframe of user similarity.
+        content_recommender: A fitted content-based recommender.
+        relevance_map: A dictionary of relevant strategies for each influencer.
+        k: The number of strategies to recommend.
+        candidates: A tuple of alpha values to try.
+    Returns:
+        The alpha that maximizes the average hit-rate@K.
+    """
     best_alpha = 0.5
     best_score = -1.0
 

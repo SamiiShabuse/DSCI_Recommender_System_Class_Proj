@@ -16,6 +16,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 @dataclass
 class ContentBasedRecommender:
+    """
+    Content-based recommender that recommends strategies similar to what worked for that influencer.
+    """
     vectorizer: TfidfVectorizer = field(
         default_factory=lambda: TfidfVectorizer(
             max_features=5000,
@@ -28,6 +31,13 @@ class ContentBasedRecommender:
     train_df_: pd.DataFrame | None = None
 
     def fit(self, train_df: pd.DataFrame) -> ContentBasedRecommender:
+        """
+        Fits the content-based recommender to the training data.
+        Args:
+            train_df: A dataframe of training data.
+        Returns:
+            A content-based recommender.
+        """
         self.train_df_ = train_df.copy()
         captions = train_df["caption"].fillna("").astype(str)
         self.vectorizer.fit(captions)
@@ -47,6 +57,13 @@ class ContentBasedRecommender:
         return self
 
     def _user_profile(self, influencer_name: str) -> np.ndarray | None:
+        """
+        Builds a user profile by averaging the TF-IDF vectors of the influencer's posts.
+        Args:
+            influencer_name: The name of the influencer to build a profile for.
+        Returns:
+            A user profile.
+        """
         assert self.train_df_ is not None
         user_posts = self.train_df_[self.train_df_["influencer_name"] == influencer_name]
         if user_posts.empty:
@@ -60,6 +77,13 @@ class ContentBasedRecommender:
         return np.asarray(profile).ravel()
 
     def score_strategies(self, influencer_name: str) -> pd.Series:
+        """
+        Scores strategies by cosine similarity to the user profile.
+        Args:
+            influencer_name: The name of the influencer to score strategies for.
+        Returns:
+            A series of scores for each strategy.
+        """
         if self.strategy_vectors_ is None or self.train_df_ is None:
             raise RuntimeError("ContentBasedRecommender must be fit before scoring.")
 
@@ -82,6 +106,14 @@ class ContentBasedRecommender:
         return scores.drop(index=list(used), errors="ignore").sort_values(ascending=False)
 
     def recommend(self, influencer_name: str, k: int = 5) -> list[str]:
+        """
+        Recommends strategies by cosine similarity to the user profile.
+        Args:
+            influencer_name: The name of the influencer to recommend strategies for.
+            k: The number of strategies to recommend.
+        Returns:
+            A list of recommended strategies.
+        """
         scores = self.score_strategies(influencer_name)
         return scores.head(k).index.tolist()
 
@@ -91,4 +123,13 @@ def recommend_content_based(
     recommender: ContentBasedRecommender,
     k: int = 5,
 ) -> list[str]:
+    """
+    Recommends strategies similar to what worked for the given influencer.
+    Args:
+        influencer_name: The name of the influencer to recommend strategies for.
+        recommender: A fitted content-based recommender.
+        k: The number of strategies to recommend.
+    Returns:
+        A list of recommended strategies.
+    """
     return recommender.recommend(influencer_name, k=k)
