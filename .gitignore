@@ -10,5 +10,10 @@ data/*
 artifacts/processed/
 artifacts/_*
 artifacts/parts/
-!artifacts/results/
-!artifacts/figures/
+artifacts/runs/*/processed/
+!artifacts/comparisons/
+!artifacts/runs/*/results/
+!artifacts/runs/*/figures/
+!artifacts/comparisons/**
+!artifacts/runs/*/results/**
+!artifacts/runs/*/figures/**
