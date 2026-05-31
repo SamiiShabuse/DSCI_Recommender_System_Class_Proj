@@ -125,7 +125,43 @@ For a final run:
 !python scripts/dataset_summary.py
 ```
 
+## 6. Run Full Pipeline (Phases 1 & 2)
+
+After extracting metadata (e.g. 10k sample to `/content/Post_metadata_10000_extracted`):
+
+```bash
+!python scripts/run_pipeline.py \
+  --extracted-metadata-dir "/content/Post_metadata_10000_extracted" \
+  --output-dir "/content/drive/MyDrive/dsci351_artifacts" \
+  --k 5
+```
+
+Or reuse a saved posts base parquet:
+
+```bash
+!python scripts/run_pipeline.py \
+  --posts-parquet "/content/drive/MyDrive/dsci351_artifacts/processed/posts_base_10000.parquet" \
+  --output-dir "/content/drive/MyDrive/dsci351_artifacts" \
+  --k 5
+```
+
+Outputs:
+
+- `artifacts/processed/posts_base_*.parquet`
+- `artifacts/results/model_comparison.csv`
+- `artifacts/figures/model_comparison.png`
+
+See [Pipeline.md](Pipeline.md) for module details.
+
+## Team Drive Paths
+
+```python
+DATA_PATH = Path("/content/drive/.shortcut-targets-by-id/1ISiSH4-aM6kP_0lKQYejpk1sa6Jei-7e/Instagram influencer dataset")
+REPO_CODE = Path("/content/drive/MyDrive/DSCI351/Class Project/DSCI_Recommender_System_Class_Proj")
+POSTS_INFO_ZIP = DATA_PATH / "Post_metadata" / "posts_info.zip"
+```
+
 ## Notes
 
-- If metadata is not present yet, subset build still works for influencer and mapping tables.
-- This flow is designed so your team can make progress immediately and avoid local storage bottlenecks.
+- If metadata is not present yet, run `python scripts/run_pipeline.py --synthetic` locally for a smoke test.
+- Large processed parquets stay gitignored; copy final metrics CSV to repo or Drive for the report.
