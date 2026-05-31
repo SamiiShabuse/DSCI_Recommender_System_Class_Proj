@@ -1,0 +1,7 @@
+posts_total=1702
+train_posts=1319
+test_posts=383
+unique_influencers=120
+unique_strategies=139
+k=5
+hybrid_alpha=0.3
