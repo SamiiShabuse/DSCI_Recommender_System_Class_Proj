@@ -1,4 +1,8 @@
-"""Caption TF-IDF content-based strategy recommender."""
+"""Caption TF-IDF content-based strategy recommender.
+
+Model: Content-based
+What it does: TF-IDF on captions to recommend strategies similar to what worked for that influencer.
+"""
 
 from __future__ import annotations
 
