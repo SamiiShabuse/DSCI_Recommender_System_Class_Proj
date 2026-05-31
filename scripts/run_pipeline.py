@@ -50,7 +50,13 @@ def parse_args() -> argparse.Namespace:
         "--synthetic-influencers",
         type=int,
         default=120,
-        help="Number of influencers to simulate when --synthetic is set.",
+        help="Minimum influencer pool size when --synthetic is set.",
+    )
+    parser.add_argument(
+        "--target-posts",
+        type=int,
+        default=20_000,
+        help="Target number of posts for synthetic generation or metadata parsing cap.",
     )
     parser.add_argument(
         "--k",
@@ -77,6 +83,7 @@ def main() -> None:
     config = PipelineConfig(
         data_dir=args.data_dir,
         output_dir=args.output_dir,
+        target_posts=args.target_posts,
         posts_parquet=args.posts_parquet,
         extracted_metadata_dir=args.extracted_metadata_dir,
         synthetic=args.synthetic,

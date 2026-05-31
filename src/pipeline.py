@@ -19,7 +19,7 @@ from src.preprocess import build_posts_base, load_influencers_df, parse_metadata
 class PipelineConfig:
     data_dir: Path
     output_dir: Path
-    sample_size: int = 10_000
+    target_posts: int = 20_000
     k: int = 5
     seed: int = 42
     posts_parquet: Path | None = None
@@ -52,6 +52,7 @@ def load_posts_base(config: PipelineConfig) -> pd.DataFrame:
         posts_df = parse_metadata_directory(
             config.extracted_metadata_dir,
             output_dir=config.output_dir / "processed" / "parts",
+            max_files=config.target_posts,
         )
         return build_posts_base(posts_df, influencers_df)
 
@@ -60,6 +61,7 @@ def load_posts_base(config: PipelineConfig) -> pd.DataFrame:
             influencers_path,
             synthetic=True,
             num_influencers=config.synthetic_influencers,
+            target_posts=config.target_posts,
             seed=config.seed,
         )
 
@@ -153,6 +155,7 @@ def run_pipeline(config: PipelineConfig) -> dict:
                 f"test_posts={len(test_df)}",
                 f"unique_influencers={posts_base_df['influencer_name'].nunique()}",
                 f"unique_strategies={posts_base_df['strategy'].nunique()}",
+                f"target_posts={config.target_posts}",
                 f"k={config.k}",
                 f"hybrid_alpha={hybrid_alpha}",
             ]

@@ -138,22 +138,26 @@ def parse_metadata_file_light(path: str | Path) -> dict[str, Any] | None:
     }
 
 
-def list_metadata_files(metadata_dir: str | Path) -> list[Path]:
+def list_metadata_files(metadata_dir: str | Path, max_files: int | None = None) -> list[Path]:
     metadata_dir = Path(metadata_dir)
-    return sorted(
+    files = sorted(
         path
         for path in metadata_dir.rglob("*")
         if path.is_file() and path.suffix.lower() in {".info", ".json"}
     )
+    if max_files is not None:
+        return files[:max_files]
+    return files
 
 
 def parse_metadata_directory(
     metadata_dir: str | Path,
     batch_size: int = 1000,
     output_dir: str | Path | None = None,
+    max_files: int | None = None,
 ) -> pd.DataFrame:
-    """Parse all metadata files in a directory, optionally writing batch parquets."""
-    metadata_files = list_metadata_files(metadata_dir)
+    """Parse metadata files in a directory, optionally writing batch parquets."""
+    metadata_files = list_metadata_files(metadata_dir, max_files=max_files)
     if not metadata_files:
         raise FileNotFoundError(f"No metadata files found under {metadata_dir}")
 
@@ -253,7 +257,15 @@ def add_strategy_features(posts_df: pd.DataFrame) -> pd.DataFrame:
 
 def add_engagement_features(posts_df: pd.DataFrame, influencers_df: pd.DataFrame) -> pd.DataFrame:
     """Merge influencer profiles and compute engagement scores."""
-    df = posts_df.merge(influencers_df, on="influencer_name", how="left")
+    profile_cols = [
+        column
+        for column in ["influencer_name", "category", "followers", "followees", "total_posts"]
+        if column in influencers_df.columns
+    ]
+    if "followers" in posts_df.columns and "category" in posts_df.columns:
+        df = posts_df.copy()
+    else:
+        df = posts_df.merge(influencers_df[profile_cols], on="influencer_name", how="left")
 
     df["likes"] = pd.to_numeric(df["likes"], errors="coerce").fillna(0)
     df["comments"] = pd.to_numeric(df["comments"], errors="coerce").fillna(0)
