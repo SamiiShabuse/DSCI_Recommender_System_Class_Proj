@@ -1,210 +1,183 @@
-# 8-Week Milestone Plan: Creator Intelligence Recommender System
+# Project Execution Plan: Creator Intelligence Recommender System
 
-This plan is designed to maximize project quality, technical depth, and presentation quality for a top grade and strong portfolio value.
+This plan reflects **actual repo progress** as of May 2026 and defines the remaining work to reach a professional final submission.
 
-## Success Targets
+## Current Status Snapshot
 
-- Deliver a reproducible recommendation pipeline from raw metadata to ranked recommendations.
-- Implement and compare three recommenders: content-based, collaborative filtering, and hybrid.
-- Report results with clear metrics, ablations, and error analysis.
-- Produce polished final artifacts: report, slides, demo, and clean repository.
+| Area | Status | Evidence |
+|------|--------|----------|
+| Problem definition | **Done** | Proposal + locked strategy label in notebooks |
+| Influencer data loaded | **Done** | `data/influencers.txt` (33,935 rows) |
+| Mapping data cleaned | **Done** | `data/clean_json_image_mapping.parquet` (10,078,910 rows) |
+| Raw mapping file | **Done** | `data/JSON-Image_files_mapping.txt` (~747 MB) |
+| Post metadata access | **Done (Colab/Drive)** | `Post_metadata/posts_info.zip` via Google Drive shortcut |
+| Metadata parsing pipeline | **Done (notebook)** | `notebooks/Cleaned Up Notebook.ipynb` |
+| Feature engineering | **Done (notebook)** | Time/caption/hashtag/ad/media buckets → `strategy` |
+| Engagement scoring | **Done (notebook)** | `log_engagement_score` |
+| Global + category baselines | **Done (notebook)** | `recommend_global_strategies`, `recommend_by_category` |
+| User-based CF | **Done (notebook)** | Cosine similarity + neighbor-weighted scores |
+| Content-based recommender | **Not done** | TF-IDF on captions planned, not implemented |
+| Hybrid model | **Not done** | Weighted blend planned, not implemented |
+| Train/test split + metrics | **Not done** | No Precision@K / NDCG evaluation yet |
+| Code in `src/` modules | **Partial** | Only `data_import.py`; models not ported |
+| Processed artifacts in repo | **Not done** | Saved on Colab Drive, not committed |
+| Final report (PDF) | **Not done** | |
+| Presentation slides | **Not done** | |
+| README / requirements | **Partial** | Minimal; needs full dependency list |
 
-## Working Rhythm (Every Week)
+**Bottom line:** Weeks 1–5 of the original plan are largely complete **inside Colab notebooks**. The critical gap is **formal evaluation, missing models, reproducible `src/` code, and submission artifacts**.
 
-- Team sync (30 to 45 minutes): Monday planning and Friday review.
-- Deliverable check: one concrete output committed by end of week.
-- Experiment logging: record parameters, metrics, and observations.
-- Risk check: identify one blocker and one mitigation each week.
+---
 
-## Week 1: Scope Lock + Data Access
+## Locked Technical Decisions
 
-Goals:
+These are no longer open questions — use them consistently in code, report, and slides.
 
-- Freeze problem definition, recommendation target, and evaluation protocol.
-- Finalize dataset subset and local data access plan.
+1. **Recommendation unit:** Content strategy string  
+   `{time_bucket} + {caption_bucket} + {hashtag_bucket} + {ad_bucket} + {media_bucket}`
 
-Tasks:
+2. **Working dataset size:** 10,000 randomly sampled posts from `posts_info.zip` (seed=42), expandable to 20k for final run if Colab RAM allows.
 
-- Decide exact recommendation unit (post strategy label, style cluster, or post template).
-- Decide evaluation split strategy (time-based preferred for realistic recommendation).
-- Build data inventory of available metadata fields and missingness.
-- Define baseline assumptions and project constraints.
+3. **Engagement score (training signal):**  
+   `log_engagement_score = log1p(likes + 2×comments) / log1p(followers)`
 
-Deliverables:
+4. **Evaluation labels:** Per-influencer quintile pseudo-ratings (1–5) from engagement rate, for optional MAE/RMSE.
 
-- Final project proposal document.
-- Data inventory table and target-definition note.
+5. **Evaluation split:** Time-based — most recent 20% of each influencer's posts held out for test.
 
-Exit Criteria:
+6. **Primary ranking metrics:** Precision@5, Recall@5, NDCG@5 (report @3 and @5).
 
-- Team can describe the task in one sentence and name exactly what a recommendation output looks like.
+7. **Environment:** Google Colab + Google Drive for data; repo cloned into Drive for team access.
 
-## Week 2: Data Pipeline + Cleaning
+---
 
-Goals:
+## Remaining Work Phases
 
-- Build robust and repeatable preprocessing for influencer and post metadata.
+### Phase 1: Reproducibility + Port to `src/` (Priority: Critical)
 
-Tasks:
-
-- Parse influencer and post metadata files into tabular format.
-- Standardize timestamps, text fields, and engagement fields.
-- Handle missing values and obvious outliers.
-- Create versioned processed dataset snapshots.
-- Set up Google Colab + Drive data workflow for large-scale preprocessing.
-
-Deliverables:
-
-- Reproducible preprocessing script(s).
-- Data quality report (row counts, null rates, key distributions).
-- Colab runbook with exact commands for setup and subset generation.
-
-Exit Criteria:
-
-- A single command can regenerate a clean analysis-ready dataset.
-
-## Week 3: Feature Engineering + EDA
-
-Goals:
-
-- Extract features needed by all recommender variants.
+**Goal:** One notebook or script run produces the same outputs every time.
 
 Tasks:
 
-- Build text features from captions and hashtags (TF-IDF or embeddings).
-- Create engagement-normalized labels (for example engagement rate).
-- Engineer time/context features (weekday, posting time bucket, sponsorship flag).
-- Segment influencers by category/scale to support fair comparisons.
+- [ ] Expand `requirements.txt` (pandas, numpy, scikit-learn, pyarrow, tqdm, matplotlib).
+- [ ] Port notebook functions into modules:
+  - `src/preprocess.py` — parse metadata, build strategy labels, engagement scores
+  - `src/baselines.py` — global and category recommenders
+  - `src/collaborative.py` — interaction matrix + user-based CF
+  - `src/content_based.py` — TF-IDF caption → strategy recommendations
+  - `src/hybrid.py` — weighted combination
+  - `src/evaluation.py` — time split, Precision@K, Recall@K, NDCG@K
+- [ ] Consolidate notebooks: keep `notebooks/01_pipeline_and_models.ipynb` as the main runbook; archive or trim `Data_Extraction.ipynb`.
+- [ ] Document Colab/Drive paths in `docs/Colab_Setup.md` (use team's actual Drive shortcut path).
+- [ ] Save processed outputs to a standard location: `artifacts/processed/` (gitignored) with naming convention `posts_base_10000.parquet`.
 
-Deliverables:
+**Exit criteria:** Re-run from extracted 10k sample → metrics table without manual cell edits.
 
-- Feature dictionary document.
-- EDA notebook/charts with insights that motivate modeling choices.
+---
 
-Exit Criteria:
+### Phase 2: Missing Models + Evaluation (Priority: Critical)
 
-- Feature matrix and interaction matrix are ready for model training.
-
-## Week 4: Baseline Recommenders
-
-Goals:
-
-- Set performance floor with simple, interpretable baselines.
-
-Tasks:
-
-- Implement popularity and recent-performance baselines.
-- Implement a first content-based recommender.
-- Build Top-K recommendation generation function.
-
-Deliverables:
-
-- Baseline metrics table.
-- First recommendation examples for several influencer profiles.
-
-Exit Criteria:
-
-- Baselines run end-to-end on held-out data and produce reproducible metrics.
-
-## Week 5: Collaborative Filtering Model
-
-Goals:
-
-- Add cross-influencer learning signal.
+**Goal:** Compare all five approaches with held-out metrics.
 
 Tasks:
 
-- Build influencer-content interaction matrix.
-- Implement collaborative filtering model (matrix factorization or nearest-neighbor CF).
-- Tune key hyperparameters with validation split.
+- [ ] Implement **content-based** recommender: TF-IDF on captions, recommend strategies from high-engagement posts with similar text.
+- [ ] Implement **hybrid**: e.g. `score = α × CF_score + (1−α) × content_score` (tune α on validation).
+- [ ] Build time-based train/test split per influencer.
+- [ ] Define "relevant" item in test: strategies in top quintile pseudo-rating for that influencer.
+- [ ] Run comparison table: Global | Category | CF | Content-based | Hybrid.
+- [ ] Save `artifacts/results/model_comparison.csv` and 2–3 figures for the report.
 
-Deliverables:
+**Exit criteria:** Hybrid or best model beats global baseline on NDCG@5; results reproducible from script.
 
-- CF model training/evaluation scripts.
-- Validation results and hyperparameter summary.
+---
 
-Exit Criteria:
+### Phase 3: Report + Slides (Priority: High)
 
-- CF beats at least one baseline on primary ranking metric.
-
-## Week 6: Hybrid Model + Ablations
-
-Goals:
-
-- Combine content and collaborative signals into a stronger model.
+**Goal:** Submit-ready narrative aligned with rubric.
 
 Tasks:
 
-- Implement weighted or stacked hybrid recommender.
-- Run ablation study to quantify contribution of each component.
-- Evaluate by influencer category and influencer size buckets.
+- [ ] Draft 3-page report using [Final_Submission.md](Final_Submission.md) outline.
+- [ ] Create slides with pipeline diagram, metrics table, and 2 demo influencers.
+- [ ] Add limitations, ethics note (public influencer data, no PII beyond usernames), future work.
+- [ ] Export report to PDF.
 
-Deliverables:
+**Exit criteria:** Another student can explain problem, method, and results in 5 minutes using slides alone.
 
-- Hybrid model outputs and comparison charts.
-- Ablation table with concise interpretation.
+---
 
-Exit Criteria:
+### Phase 4: Polish + Submission (Priority: High)
 
-- Hybrid is best overall or justified with strong trade-off reasoning.
-
-## Week 7: Final Evaluation + Storytelling
-
-Goals:
-
-- Convert technical results into clear project narrative.
+**Goal:** Professional repo and complete Canvas upload.
 
 Tasks:
 
-- Run final metric suite: Precision@K, Recall@K, NDCG@K, plus engagement-oriented outcomes.
-- Add qualitative examples: good recommendations and failure cases.
-- Write error analysis and limitations section.
-- Draft report sections and slide deck structure.
+- [ ] Update root README: problem, setup, how to reproduce, dataset links, team names.
+- [ ] Final QA: all rubric sections covered, figures labeled, citations included.
+- [ ] Upload PDF, repo link, slides, dataset link to Canvas.
 
-Deliverables:
+**Exit criteria:** Submission checklist in Final_Submission.md fully checked.
 
-- Final results tables/figures.
-- Draft final report and draft presentation slides.
+---
 
-Exit Criteria:
+## Suggested Team Split
 
-- Another student can understand problem, method, and value in 5 minutes.
+| Member | Primary ownership |
+|--------|-------------------|
+| Samii | Pipeline port, Colab infra, notebook consolidation |
+| Savit | Content-based + hybrid models, hyperparameter tuning |
+| Han | Evaluation module, report draft, slides + figures |
 
-## Week 8: Polish + Demo + Submission
+Rotate review: each PR/notebook section gets a second pair of eyes before merge.
 
-Goals:
+---
 
-- Ship a professional, complete final package.
+## Weekly Rhythm (Until Due Date)
 
-Tasks:
+- **Monday (30 min):** Pick Phase tasks; assign owners; note blockers.
+- **Mid-week:** Push code/notebook updates; log metrics in a shared sheet.
+- **Friday (30 min):** Demo what runs end-to-end; update status table above.
 
-- Refactor code for readability and reproducibility.
-- Add README quickstart and experiment reproduction instructions.
-- Record or rehearse short demo with representative examples.
-- Final QA pass on report, citations, figures, and rubric coverage.
+---
 
-Deliverables:
+## Risk Register
 
-- Final code, report, slides, and demo-ready outputs.
-- Submission checklist completed.
+| Risk | Mitigation |
+|------|------------|
+| Colab session crash on 10k parse | Batch parquet writes (already in notebook); lower SAMPLE_SIZE to 5k if needed |
+| Sparse CF matrix | Fall back to category baseline for cold-start influencers; mention in limitations |
+| Hybrid not beating baselines | Report trade-offs honestly; category baseline may win on sparse data — still valid analysis |
+| 3-page limit | One combined table for metrics; move details to repo README |
+| Drive path differs per teammate | Document canonical path in Colab_Setup.md; use `DATA_PATH` variable at top of notebook |
 
-Exit Criteria:
+---
 
-- Project is reproducible, defensible, and presentation-ready.
+## Original 8-Week Plan (Reference)
 
-## High-Score Checklist (Use Weekly)
+The original week-by-week plan assumed starting from scratch. Mapped to today:
 
-- Problem statement is precise and measurable.
-- Evaluation protocol is realistic (time-aware split preferred).
-- Metrics match recommendation objective.
-- Baselines are strong enough to make improvements meaningful.
-- Every major modeling choice has evidence (plot, metric, or ablation).
-- Report includes limitations, ethics/privacy note, and future work.
-- Repository is clean, documented, and runnable.
+| Original week | Actual status |
+|---------------|---------------|
+| Week 1: Scope + data access | **Complete** |
+| Week 2: Data pipeline | **Complete** (notebooks + parquet mapping) |
+| Week 3: Features + EDA | **Complete** (in notebook) |
+| Week 4: Baselines | **Complete** (in notebook) |
+| Week 5: Collaborative filtering | **Complete** (in notebook) |
+| Week 6: Hybrid + ablations | **Not started** |
+| Week 7: Final evaluation + report | **Not started** |
+| Week 8: Polish + submission | **Not started** |
 
-## Portfolio/Recruiting Boost (Google-Ready Signal)
+Focus all remaining effort on **Phases 2–4** above.
 
-- Keep architecture diagram simple and professional.
-- Include one-page technical summary with quantified gains.
-- Emphasize reproducibility, experiment rigor, and error analysis.
-- Show practical impact: how recommendations change creator strategy decisions.
+---
+
+## High-Score Checklist
+
+- [ ] Problem statement is precise and measurable
+- [ ] Time-aware evaluation split
+- [ ] Metrics match recommendation objective (ranking, not just MAE)
+- [ ] Strong baselines included (global + category)
+- [ ] Every modeling choice supported by metric or ablation
+- [ ] Limitations, ethics/privacy note, and future work in report
+- [ ] Repository clean, documented, and runnable from README

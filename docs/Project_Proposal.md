@@ -1,77 +1,224 @@
-# Creator Intelligence Recommender System
+# Project Proposal: Creator Intelligence Recommender System
 
-This folder collects the project brief, design notes, and implementation decisions for the Instagram influencer recommender system.
+**Team:** Samii Shabuse, Savit Tumuluri, Han Truong  
+**Course:** DSCI351 — Recommender Systems  
+**Status:** Data pipeline and baseline/CF models implemented in Colab notebooks; evaluation, hybrid model, and final report in progress.
 
-## Planning Docs
+---
 
-- 8-week execution roadmap: [Milestones.md](Milestones.md)
+## Project Title
 
-## Project Summary
+Creator Intelligence Recommender System for Instagram Influencers
 
-We are building a recommender system that helps Instagram influencers decide what kind of content to create next. The system will use influencer metadata and post metadata to recommend content strategies or post types based on engagement patterns.
+---
 
-## Initial Scope
+## Problem Statement
 
-The first version should focus on metadata rather than raw images because the dataset is large and image processing would add a lot of complexity too early.
+Recommender systems help users make decisions in complex information environments by predicting relevant items or producing top-N ranked recommendations. For this project, **users are influencers** and **items are content strategies** (actionable posting patterns derived from metadata).
 
-Primary dataset links:
+The system recommends what kind of content an influencer should create next based on their own history and patterns from similar influencers. This fits the course definition: the model predicts user preference and generates ranked recommendations.
 
-- Dataset page: https://sites.google.com/site/sbkimcv/dataset/instagram-influencer-dataset
-- Google Drive: https://drive.google.com/drive/folders/1ISiSH4-aM6kP_0lKQYejpk1sa6Jei-7e
+**One-sentence task:** Given an influencer's past posts, rank content strategies by predicted engagement so the creator knows what to post next.
 
-Primary inputs:
+---
 
-- Influencer profile data
-- Post captions
-- Hashtags
-- Likes and comments
-- Timestamp and sponsorship information
-- Tagged users
+## Dataset
 
-Primary outputs:
+### Source
 
-- Ranked post type or content strategy recommendations
-- Comparisons between similar influencers
-- Simple engagement-based scoring for candidate recommendations
+- **Dataset page:** https://sites.google.com/site/sbkimcv/dataset/instagram-influencer-dataset
+- **Google Drive:** https://drive.google.com/drive/folders/1ISiSH4-aM6kP_0lKQYejpk1sa6Jei-7e
+- **Creator:** Seungbae Kim — ksb2043@gmail.com — https://www.linkedin.com/in/seungbae-kim/
 
-## Proposed Approach
+The full dataset is approximately 189 GB including images. We use **metadata only** for practicality.
 
-1. Content-based recommendations using post text and engagement signals.
-2. Collaborative filtering using behavior patterns across influencers.
-3. A hybrid approach that combines both methods.
+### Components
 
-## Evaluation Targets
+| Component | Description | Local status |
+|-----------|-------------|--------------|
+| `influencers.txt` | 33,935 influencers; username, category, followers, followees, posts | Available locally |
+| `JSON-Image_files_mapping.txt` | ~10M rows linking influencers to metadata and image files | Available locally |
+| `clean_json_image_mapping.parquet` | Deduplicated mapping (one row per metadata file) | Available locally |
+| `Post_metadata/posts_info.zip` | Compressed post JSON metadata | Google Drive (Colab) |
+| Post images | JPG files | Not used in this project |
 
-- Engagement-based outcomes (likes, comments, normalized engagement rate)
-- Top-N ranking quality (Precision@K, Recall@K, NDCG@K)
-- Comparative performance across content-based, collaborative filtering, and hybrid models
+### Dataset Statistics
 
-## Slow Build Plan
+- **Followers:** 1,000 to 96,476,007 (avg ~140,329) — highly skewed
+- **Posts per influencer:** 100 to 127,520 (avg ~1,487)
+- **Categories (11):** fashion (11,911), other (5,720), travel (4,210), family (4,070), food (3,565), beauty, interior, fitness, pets, and one typo (`fasion`)
 
-Phase 1:
+### Working Subset for Modeling
 
-- Confirm the exact dataset files we will use.
-- Define the smallest useful problem statement.
-- Set up folders, environment, and data-loading scripts.
+Because full metadata extraction is resource-intensive, we sample **10,000 posts** (random seed 42) from `posts_info.zip` via selective 7zip extraction in Google Colab. This subset supports fast iteration while preserving diversity across influencers and categories.
 
-Phase 2:
+---
 
-- Load and inspect the metadata.
-- Clean and standardize fields.
-- Create a small exploratory analysis.
+## Recommendation Target (Locked)
 
-Phase 3:
+We recommend **content strategies**, not individual posts. Each strategy combines five interpretable dimensions:
 
-- Build a simple baseline recommender.
-- Evaluate with engagement-oriented metrics.
+| Dimension | Buckets |
+|-----------|---------|
+| Time of day | morning, afternoon, evening, night, unknown |
+| Caption length | short (<80), medium (80–200), long (>200) |
+| Hashtags | none, few (1–3), many (>3) |
+| Sponsored | ad, not_ad |
+| Media type | image, video |
 
-Phase 4:
+**Strategy string example:**  
+`evening + medium_caption + few_hashtags + not_ad + image`
 
-- Add collaborative filtering.
-- Combine methods into a hybrid recommender.
+This gives creators concrete guidance (when to post, caption style, hashtag use, format) while keeping the item space finite enough for collaborative filtering.
 
-## Open Questions
+---
 
-- Which exact metadata files are available to us locally?
-- Do we want to predict content type, caption style, or both?
-- What is the smallest evaluation set we can build first?
+## System Design
+
+### Inputs
+
+- Influencer profile (category, followers)
+- Post captions and hashtags
+- Likes, comments, timestamps
+- Sponsorship and video flags
+
+### Outputs
+
+- Top-N ranked content strategies for a given influencer
+- Predicted engagement scores per strategy
+- Side-by-side comparison across model types
+
+### Models
+
+| # | Model | Description |
+|---|-------|-------------|
+| 1 | **Global popularity baseline** | Top strategies by average engagement across all posts |
+| 2 | **Category baseline** | Top strategies within the influencer's category |
+| 3 | **User-based collaborative filtering** | Cosine similarity between influencers on strategy engagement vectors; recommend strategies successful for similar users |
+| 4 | **Content-based** | TF-IDF similarity on captions; recommend strategies from semantically similar high-performing posts |
+| 5 | **Hybrid** | Weighted combination of CF and content-based scores |
+
+Implementation status: models 1–3 complete in notebook; 4–5 planned for final submission.
+
+---
+
+## Engagement and Pseudo-Ratings
+
+Instagram provides implicit feedback (likes, comments), not star ratings.
+
+**Raw engagement rate:**
+
+```
+(likes + 2 × comments) / followers
+```
+
+Comments are weighted 2× because they indicate stronger interaction than likes.
+
+**Modeling score (used in interaction matrix):**
+
+```
+log_engagement_score = log1p(likes + 2×comments) / log1p(followers)
+```
+
+**Pseudo-ratings (1–5) for optional rating prediction metrics:**  
+Within each influencer's posts, rank by engagement rate into quintiles: top 20% → 5, next 20% → 4, etc.
+
+**User-item matrix:** rows = influencers, columns = content strategies, values = mean `log_engagement_score` (or pseudo-rating) for that pair.
+
+---
+
+## Evaluation Plan
+
+### Split Strategy
+
+**Time-based holdout:** For each influencer with enough posts, the most recent 20% of posts form the test set; older posts are used for training. This mimics real deployment (recommend before the next post).
+
+### Metrics
+
+| Metric | Use |
+|--------|-----|
+| **Precision@K, Recall@K, NDCG@K** | Primary — do recommended strategies match high-engagement strategies in the test set? |
+| **Hit rate@K** | At least one recommended strategy appears in test relevant set |
+| **MAE / RMSE** | Secondary — pseudo-rating prediction accuracy |
+
+**Relevance definition:** A strategy is relevant in test if it appears in the influencer's top engagement quintile on held-out posts.
+
+### Model Comparison
+
+Report a single table comparing all five models on the same split. Include at least two qualitative case studies (influencer history + recommendations + whether they align with test performance).
+
+---
+
+## Implementation Approach
+
+### Environment
+
+- **Google Colab + Google Drive** for large data and GPU/RAM
+- **GitHub repo** for versioned code and documentation
+- See [Colab_Setup.md](Colab_Setup.md) and [Milestones.md](Milestones.md)
+
+### Repository Structure (Target)
+
+```
+src/
+  data_import.py      # Load influencers, mapping (exists)
+  preprocess.py       # Parse metadata, build strategies
+  baselines.py        # Global + category recommenders
+  collaborative.py    # User-based CF
+  content_based.py    # TF-IDF recommender
+  hybrid.py           # Weighted hybrid
+  evaluation.py       # Splits and metrics
+notebooks/
+  01_pipeline_and_models.ipynb
+artifacts/            # Processed data and results (gitignored)
+docs/                 # Proposal, milestones, submission guide
+```
+
+### Current Progress
+
+| Milestone | Status |
+|-----------|--------|
+| Data access and mapping cleanup | Done |
+| Metadata parsing (10k sample) | Done (notebook) |
+| Strategy features + engagement scores | Done (notebook) |
+| Baselines + user-based CF | Done (notebook) |
+| Content-based + hybrid | To do |
+| Formal evaluation metrics | To do |
+| Report + slides | To do |
+
+---
+
+## Limitations (Anticipated)
+
+- 10k-post sample may not represent full dataset distribution
+- Rule-based strategy buckets may miss nuanced content themes
+- Sparse matrix for influencers with few posts limits CF
+- No image or video content analysis
+- Engagement correlates with success but does not prove causation
+- Platform algorithm changes over time are not modeled
+
+## Future Improvements
+
+- Scale to 50k–100k posts; matrix factorization (SVD/ALS)
+- Learned strategy clusters (K-means on caption embeddings)
+- Image embeddings (CLIP) for visual content signal
+- Item-based CF and neural collaborative filtering
+- Online A/B testing framework (outside scope of course project)
+
+---
+
+## Planning Documents
+
+- Execution roadmap and remaining tasks: [Milestones.md](Milestones.md)
+- Final submission checklist and report outline: [Final_Submission.md](Final_Submission.md)
+- Colab workflow: [Colab_Setup.md](Colab_Setup.md)
+
+---
+
+## Project Goal
+
+1. Analyze influencer content and engagement data
+2. Identify patterns in high-performing posts
+3. Build and compare multiple recommender approaches
+4. Evaluate with ranking metrics on a realistic time-based split
+5. Deliver a clear 3-page report, slides, and reproducible repository
