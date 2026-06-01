@@ -39,7 +39,7 @@ Each post maps to one strategy string:
 {time_bucket} + {caption_bucket} + {hashtag_bucket} + {ad_bucket} + {media_bucket}
 ```
 
-Buckets are defined in `src/preprocess.py`.
+Buckets are defined in `src/data/preprocess.py`.
 
 ## Engagement Score
 
@@ -53,28 +53,28 @@ Pseudo-ratings (1–5) are per-influencer quintiles of `engagement_rate`, used t
 
 ## Models
 
-### 1. Global baseline (`src/baselines.py`)
+### 1. Global baseline (`src/models/baselines.py`)
 
 Ranks strategies by mean `log_engagement_score` across all training posts. Same recommendations for every influencer.
 
-### 2. Category baseline (`src/baselines.py`)
+### 2. Category baseline (`src/models/baselines.py`)
 
 Same as global, but filtered to the influencer's category (fashion, travel, etc.).
 
-### 3. User-based CF (`src/collaborative.py`)
+### 3. User-based CF (`src/models/collaborative.py`)
 
 - Build influencer × strategy matrix (mean engagement per cell)
 - Cosine similarity between influencers
 - Recommend strategies that similar influencers scored highly on, excluding strategies the user already used in training
 
-### 4. Content-based (`src/content_based.py`)
+### 4. Content-based (`src/models/content_based.py`)
 
 - TF-IDF vectorizer on captions (training posts)
 - Strategy profile = engagement-weighted mean TF-IDF vector per strategy
 - User profile = engagement-weighted mean TF-IDF of user's training captions
 - Recommend strategies with highest cosine similarity to user profile (excluding already-used strategies)
 
-### 5. Hybrid (`src/hybrid.py`)
+### 5. Hybrid (`src/models/hybrid.py`)
 
 ```
 score = α × normalized(CF) + (1 − α) × normalized(content)
@@ -147,13 +147,13 @@ python scripts/run_pipeline.py \
 
 | Module | Responsibility |
 |--------|----------------|
-| `src/data_import.py` | Low-level loaders for influencers/mapping |
-| `src/preprocess.py` | JSON parsing, features, engagement |
-| `src/demo_data.py` | Synthetic posts for local runs |
-| `src/baselines.py` | Popularity recommenders |
-| `src/collaborative.py` | User-based CF |
-| `src/content_based.py` | TF-IDF recommender |
-| `src/hybrid.py` | Weighted ensemble |
+| `src/data/preprocess.py` | JSON parsing, features, engagement |
+| `src/data/demo_data.py` | Synthetic posts for local runs |
+| `src/data/data_import.py` | Low-level loaders for influencers/mapping |
+| `src/models/baselines.py` | Popularity recommenders |
+| `src/models/collaborative.py` | User-based CF |
+| `src/models/content_based.py` | TF-IDF recommender |
+| `src/models/hybrid.py` | Weighted ensemble |
 | `src/evaluation.py` | Splits and metrics |
 | `src/pipeline.py` | Orchestration and plotting |
 | `scripts/run_pipeline.py` | CLI entry point |

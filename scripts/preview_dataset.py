@@ -8,7 +8,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.data_import import (
+from src.data.data_import import (
     DatasetPaths,
     extract_sample_images,
     find_metadata_dir,

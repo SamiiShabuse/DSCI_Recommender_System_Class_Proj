@@ -8,7 +8,7 @@ import random
 import numpy as np
 import pandas as pd
 
-from src.preprocess import (
+from src.data.preprocess import (
     CAPTION_BUCKETS,
     HASHTAG_BUCKETS,
     MEDIA_BUCKETS,

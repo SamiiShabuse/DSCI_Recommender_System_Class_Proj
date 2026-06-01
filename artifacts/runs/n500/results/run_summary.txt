@@ -6,5 +6,5 @@ unique_influencers=120
 unique_strategies=101
 k=5
 hybrid_alpha=0.3
-runtime_seconds=2.1
+runtime_seconds=3.0
 run_dir=C:\Users\sshab\Documents\School\DSCI351\DSCI_Recommender_System_Class_Proj\artifacts\runs\n500

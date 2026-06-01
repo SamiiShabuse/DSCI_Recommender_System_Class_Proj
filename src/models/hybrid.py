@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from src.content_based import ContentBasedRecommender
+from src.models.content_based import ContentBasedRecommender
 
 
 def normalize_scores(scores: pd.Series) -> pd.Series:

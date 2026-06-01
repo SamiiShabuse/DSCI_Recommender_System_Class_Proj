@@ -9,11 +9,11 @@ import time
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.baselines import build_category_strategy_scores, build_strategy_scores
-from src.collaborative import build_interaction_matrix, build_user_similarity
-from src.demo_data import build_posts_base_from_parquet_or_synthetic
+from src.models.baselines import build_category_strategy_scores, build_strategy_scores
+from src.models.collaborative import build_interaction_matrix, build_user_similarity
+from src.data.demo_data import build_posts_base_from_parquet_or_synthetic
 from src.evaluation import evaluate_all_models, prepare_evaluation_frames
-from src.preprocess import build_posts_base, load_influencers_df, parse_metadata_directory
+from src.data.preprocess import build_posts_base, load_influencers_df, parse_metadata_directory
 
 
 @dataclass

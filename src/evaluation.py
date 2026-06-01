@@ -8,16 +8,16 @@ from typing import Callable
 import numpy as np
 import pandas as pd
 
-from src.baselines import (
+from src.models.baselines import (
     build_category_strategy_scores,
     build_strategy_scores,
     recommend_category_for_influencer,
     recommend_global_for_influencer,
 )
-from src.collaborative import build_interaction_matrix, build_user_similarity, recommend_user_based_cf
-from src.content_based import ContentBasedRecommender
-from src.hybrid import recommend_hybrid, tune_hybrid_alpha
-from src.preprocess import assign_pseudo_ratings
+from src.models.collaborative import build_interaction_matrix, build_user_similarity, recommend_user_based_cf
+from src.models.content_based import ContentBasedRecommender
+from src.models.hybrid import recommend_hybrid, tune_hybrid_alpha
+from src.data.preprocess import assign_pseudo_ratings
 
 
 def time_based_split(

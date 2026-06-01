@@ -157,7 +157,7 @@ Raw input (synthetic / metadata / parquet)
   CSV metrics + PNG figures → artifacts/runs/n{scale}/
 ```
 
-**Strategy label** (defined in `src/preprocess.py`):
+**Strategy label** (defined in `src/data/preprocess.py`):
 
 ```
 {time_bucket} + {caption_bucket} + {hashtag_bucket} + {ad_bucket} + {media_bucket}
@@ -193,7 +193,7 @@ Each folder has a README with more detail:
 
 | Folder | README | Contents |
 |--------|--------|----------|
-| `src/` | [src/README.md](src/README.md) | Python modules: preprocess, 5 models, evaluation, pipeline |
+| `src/` | [src/README.md](src/README.md) | `data/` (preprocess), `models/` (5 recommenders), `pipeline.py`, `evaluation.py` |
 | `scripts/` | [scripts/README.md](scripts/README.md) | CLI entry points (`run_pipeline.py`, benchmarks, data tools) |
 | `notebooks/` | [notebooks/README.md](notebooks/README.md) | Jupyter notebooks (primary: `01_pipeline_and_models.ipynb`) |
 | `docs/` | [docs/README.md](docs/README.md) | Proposal, pipeline guide, submission checklist, Colab setup |
@@ -206,11 +206,11 @@ Each folder has a README with more detail:
 
 | Model | Module | Approach |
 |-------|--------|----------|
-| Global baseline | `src/baselines.py` | Top strategies by average engagement (all influencers) |
-| Category baseline | `src/baselines.py` | Top strategies within the influencer's category |
-| User-based CF | `src/collaborative.py` | Cosine similarity on influencer × strategy matrix |
-| Content-based | `src/content_based.py` | TF-IDF caption similarity to strategy profiles |
-| Hybrid | `src/hybrid.py` | Weighted blend of CF + content-based (α tuned on validation users) |
+| Global baseline | `src/models/baselines.py` | Top strategies by average engagement (all influencers) |
+| Category baseline | `src/models/baselines.py` | Top strategies within the influencer's category |
+| User-based CF | `src/models/collaborative.py` | Cosine similarity on influencer × strategy matrix |
+| Content-based | `src/models/content_based.py` | TF-IDF caption similarity to strategy profiles |
+| Hybrid | `src/models/hybrid.py` | Weighted blend of CF + content-based (α tuned on validation users) |
 
 ---
 

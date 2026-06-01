@@ -13,7 +13,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.data_import import DatasetPaths, find_metadata_dir, load_influencers
+from src.data.data_import import DatasetPaths, find_metadata_dir, load_influencers
 
 
 def parse_args() -> argparse.Namespace:

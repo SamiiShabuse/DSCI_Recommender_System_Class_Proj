@@ -8,7 +8,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.data_import import DatasetPaths, find_metadata_dir, list_metadata_files, load_influencers
+from src.data.data_import import DatasetPaths, find_metadata_dir, list_metadata_files, load_influencers
 
 
 def _top_categories(influencers: list[dict[str, object]], n: int = 10) -> list[tuple[str, int]]:
