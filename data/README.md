@@ -15,7 +15,7 @@ See [Project Proposal](../docs/Project_Proposal.md) and [Colab Setup](../docs/Co
 
 | File | Description |
 |------|-------------|
-| `influencers.txt` | 33,935 influencer profiles (username, category, followers, etc.) |
+| `influencers.txt` | 33,935 influencer profiles (username, category, followers, etc.); optional for synthetic smoke tests because demo profiles are built in |
 | `JSON-Image_files_mapping.txt` | Maps influencers to post metadata and image filenames |
 | `clean_json_image_mapping.parquet` | Deduplicated mapping (~10M rows) |
 | `Post_metadata/` | Extracted post `.info` / JSON metadata (optional locally; often on Colab/Drive) |

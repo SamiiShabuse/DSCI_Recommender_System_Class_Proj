@@ -82,15 +82,17 @@ Additional runs: `artifacts/runs/n20000/`, `n50000/`, `n100000/`.
 
 The easiest way to reproduce end-to-end on a laptop **without the full dataset**.
 
-### Step 1 — Add influencer profiles
+### Step 1 — Influencer profiles
 
-Download `influencers.txt` from the [official dataset](https://sites.google.com/site/sbkimcv/dataset/instagram-influencer-dataset) or [Google Drive mirror](https://drive.google.com/drive/folders/1ISiSH4-aM6kP_0lKQYejpk1sa6Jei-7e) and place it in:
+For a quick local run, no download is required. If `data/influencers.txt` is not present, synthetic mode uses built-in demo influencer profiles so the pipeline still runs in a fresh clone.
+
+For the most realistic synthetic run, download `influencers.txt` from the [official dataset](https://sites.google.com/site/sbkimcv/dataset/instagram-influencer-dataset) or [Google Drive mirror](https://drive.google.com/drive/folders/1ISiSH4-aM6kP_0lKQYejpk1sa6Jei-7e) and place it in:
 
 ```
 data/influencers.txt
 ```
 
-See [data/README.md](data/README.md) for other optional files. Only `influencers.txt` is required for a synthetic run.
+See [data/README.md](data/README.md) for other optional files. Real metadata and images are not required for a synthetic run.
 
 ### Step 2 — Run the pipeline
 
@@ -103,9 +105,13 @@ If you omit all data flags, the script **defaults to `--synthetic`** automatical
 **Common options:**
 
 ```bash
+python scripts/run_pipeline.py --target-posts 10
+python scripts/run_pipeline.py --target-posts 1000
 python scripts/run_pipeline.py --synthetic --target-posts 10000 --k 5 --seed 42
 python scripts/run_scale_benchmark.py --synthetic --scales 10000 20000 50000
 ```
+
+`--target-posts 10` is only a fast smoke test. It verifies that the pipeline runs and writes artifacts, but it may show `evaluated_users=0` because there are too few posts per influencer for a meaningful train/test evaluation. Use `--target-posts 1000` or higher to see non-empty metrics.
 
 ### Step 3 — Check outputs
 
@@ -135,7 +141,7 @@ python scripts/run_pipeline.py --extracted-metadata-dir "path/to/Post_metadata" 
 python scripts/run_pipeline.py --posts-parquet "path/to/posts_base_10000.parquet" --target-posts 10000
 ```
 
-Report numbers in the final write-up should come from **real metadata** (at least 10k posts), not synthetic data.
+If you prepare an additional narrative beyond the required slides/repo, prefer numbers from **real metadata** (at least 10k posts) over synthetic data.
 
 ---
 
@@ -233,7 +239,7 @@ Local `data/` contents are gitignored except [data/README.md](data/README.md). D
 | [docs/How_It_Works.md](docs/How_It_Works.md) | Plain-language overview — **start here for grading** |
 | [docs/Pipeline.md](docs/Pipeline.md) | Technical pipeline reference |
 | [docs/Project_Proposal.md](docs/Project_Proposal.md) | Original project scope |
-| [docs/Final_Submission.md](docs/Final_Submission.md) | Report outline and rubric mapping |
+| [docs/Final_Submission.md](docs/Final_Submission.md) | Final checklist and rubric mapping |
 
 ---
 
