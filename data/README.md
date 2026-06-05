@@ -2,7 +2,7 @@
 
 Raw and processed inputs for the Instagram influencer recommender system. Large files are gitignored; clone or download them locally as needed.
 
-**Used by:** `scripts/run_pipeline.py`, `scripts/dataset_summary.py`, and `src/preprocess.py`. See [scripts/README.md](../scripts/README.md) and [src/README.md](../src/README.md).
+**Used by:** `scripts/run_pipeline.py`, `scripts/dataset_summary.py`, and `src/data/preprocess.py`. See [scripts/README.md](../scripts/README.md) and [src/README.md](../src/README.md).
 
 ## Official sources
 

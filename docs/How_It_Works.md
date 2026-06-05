@@ -2,7 +2,7 @@
 
 **Team:** Samii Shabuse, Savit Tumuluri, Han Truong  
 **Course:** DSCI351 — Recommender Systems  
-**Audience:** Teammates who need to understand what we built, why, and what is left for the final submission.
+**Audience:** Teammates and graders who need to understand what we built, why, and how to verify it.
 
 For technical commands and file paths, see [Pipeline.md](Pipeline.md). For the original plan, see [Project_Proposal.md](Project_Proposal.md) and [Milestones.md](Milestones.md).
 
@@ -10,23 +10,23 @@ For technical commands and file paths, see [Pipeline.md](Pipeline.md). For the o
 
 ## Are we meeting the project proposal and plan?
 
-**Yes — for Phases 1 and 2 (building and evaluating the system).** The approach matches what we proposed. What remains is **Phase 3–4** (report PDF, slides, Canvas upload).
+**Yes.** The implemented system matches the proposal: Instagram influencers are users, strategy labels are items, engagement is implicit feedback, and the project compares baselines, collaborative filtering, content-based recommendation, and a hybrid model.
 
 | Proposal / plan requirement | Status | Where it lives |
 |-----------------------------|--------|----------------|
-| Users = influencers, items = content strategies | Done | `src/preprocess.py` |
-| Five models: global, category, CF, content-based, hybrid | Done | `src/baselines.py`, `collaborative.py`, `content_based.py`, `hybrid.py` |
+| Users = influencers, items = content strategies | Done | `src/data/preprocess.py` |
+| Five models: global, category, CF, content-based, hybrid | Done | `src/models/` |
 | Metadata-only (no images) | Done | Design + Colab workflow |
-| Engagement score + pseudo-ratings | Done | `src/preprocess.py`, `src/evaluation.py` |
+| Engagement score + pseudo-ratings | Done | `src/data/preprocess.py`, `src/evaluation.py` |
 | Time-based train/test split (last 20% per influencer) | Done | `src/evaluation.py` |
 | Precision@K, Recall@K, NDCG@K comparison table | Done | `artifacts/runs/n*/results/model_comparison.csv` |
 | Reproducible pipeline | Done | `scripts/run_pipeline.py`, `notebooks/01_pipeline_and_models.ipynb` |
-| 2 qualitative case studies in slides | **To do** | Phase 3 |
-| 3-page PDF report | **To do** | Phase 3 |
-| Presentation slides | **To do** | Phase 3 |
-| Final run on **real** Colab metadata (not just synthetic) | **Recommended** | Use Colab + `posts_info.zip` extract |
+| 2 qualitative case studies in slides | Done | `docs/Final Presentation.pptx` |
+| Presentation slides | Done | `docs/Final Presentation.pptx` |
+| Final report | Waived | Professor said a separate final report is no longer required |
+| Final run on **real** Colab metadata (not just synthetic) | Optional upgrade | Local committed artifacts support reproduction; Colab workflow is documented |
 
-**Important:** Local runs use **synthetic posts** (fake post rows built from real influencer profiles) so we can test the pipeline without the 189 GB dataset. For the **final report**, we should report numbers from **real** post metadata in Colab (at least 10k posts, as in the proposal).
+**Important:** Local runs use **synthetic posts** (fake post rows built from real influencer profiles) so graders can reproduce the pipeline without downloading the full 189 GB dataset. The repo documents how to run on real metadata in Colab when the full archive is available.
 
 ---
 
@@ -171,7 +171,7 @@ We ran three **scale benchmarks** to answer:
 - `artifacts/comparisons/scale_summary.csv` — runtime, best model per scale
 - `artifacts/comparisons/scale_ndcg_by_model.png` — chart
 
-**For the final report:** Pick **one primary scale** (proposal says **10k real posts**). The 20k/50k runs are optional evidence that the pipeline scales — mention in limitations or future work if useful.
+For presentation and grading, the 10k run is the primary detailed example. The 20k, 50k, and 100k runs are scale evidence and support the slide finding that global platform trends become more competitive as the sample grows.
 
 ---
 
@@ -216,7 +216,7 @@ Output: `artifacts/runs/n10000/`
 python scripts/run_scale_benchmark.py --synthetic --scales 10000 20000 50000 100000
 ```
 
-### Colab (real data — use for final report numbers)
+### Colab (real data)
 
 1. Mount Drive, extract 10k metadata files from `posts_info.zip`
 2. Set in notebook: `DATA_MODE = "real_metadata"`, `TARGET_POSTS = 10000`
@@ -240,19 +240,18 @@ Different data sizes change matrix density and signal strength. That’s a valid
 **Q: Did we implement collaborative filtering + content-based + hybrid?**  
 Yes, all five are in `src/` and appear in every `model_comparison.csv`.
 
-**Q: What’s left before submission?**  
-- Run on **real** Colab 10k (if not done yet)  
-- Write **3-page PDF** ([Final_Submission.md](Final_Submission.md) outline)  
-- Build **slides** with 2 influencer examples  
-- Upload to Canvas  
+**Q: What is left before submission?**  
+- Confirm Canvas upload requirements  
+- Submit the repo link and `docs/Final Presentation.pptx`  
+- Note that the professor waived the separate final report if Canvas still shows the old report placeholder  
 
 **Q: Who owns what next?** (from Milestones)
 
 | Member | Focus |
 |--------|--------|
-| Samii | Colab real-data run, repo polish |
-| Savit | Case studies, model interpretation for slides |
-| Han | Report draft, metrics tables, figures |
+| Samii | Repo polish and Canvas submission |
+| Savit | Case study/model interpretation review |
+| Han | Metrics/figures review |
 
 ---
 
@@ -271,4 +270,4 @@ Yes, all five are in `src/` and appear in every `model_comparison.csv`.
 
 ## One paragraph you can paste in Slack
 
-We built a **content strategy recommender** for Instagram influencers. Each post becomes a strategy label (time + caption style + hashtags + ad + format). We train five recommendation methods on **older posts** and evaluate on **recent posts** using Precision/NDCG. Running 10k, 20k, and 50k are **three separate experiments** saved in `artifacts/runs/` — not one model getting updated. Code is done; we still need the **PDF report**, **slides**, and a **real Colab 10k run** for final numbers.
+We built a **content strategy recommender** for Instagram influencers. Each post becomes a strategy label (time + caption style + hashtags + ad + format). We train five recommendation methods on **older posts** and evaluate on **recent posts** using Precision/NDCG. Running 10k, 20k, 50k, and 100k are **separate experiments** saved in `artifacts/runs/`. The code, metrics, figures, documentation, and final presentation are ready; the separate final report was waived.

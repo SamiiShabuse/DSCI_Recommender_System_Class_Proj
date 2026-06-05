@@ -1,6 +1,6 @@
 # Project Execution Plan: Creator Intelligence Recommender System
 
-This plan reflects **actual repo progress** as of May 2026 and defines the remaining work to reach a professional final submission.
+This plan reflects the final repo state for the DSCI351 project submission.
 
 ## Current Status Snapshot
 
@@ -20,10 +20,10 @@ This plan reflects **actual repo progress** as of May 2026 and defines the remai
 | Reproducible pipeline | **Done** | `scripts/run_pipeline.py`, `run_scale_benchmark.py` |
 | Team guide | **Done** | `docs/How_It_Works.md` |
 | Metrics + figures | **Done** | Per-run under `artifacts/runs/n*/` |
-| Final report (PDF) | **Not done** | Phase 3 |
-| Presentation slides | **Not done** | Phase 3 |
+| Final report (PDF) | **Waived** | Professor said a separate final report is no longer required |
+| Presentation slides | **Done** | `docs/Final Presentation.pptx` |
 
-**Bottom line:** **Phases 1 and 2 are complete.** Next up is Phase 3 (report + slides) and Phase 4 (Canvas submission).
+**Bottom line:** Code, metrics, artifacts, docs, and slides are ready. Final action is Canvas upload.
 
 ---
 
@@ -34,16 +34,16 @@ These are no longer open questions — use them consistently in code, report, an
 1. **Recommendation unit:** Content strategy string  
    `{time_bucket} + {caption_bucket} + {hashtag_bucket} + {ad_bucket} + {media_bucket}`
 
-2. **Working dataset size:** 10,000 randomly sampled posts from `posts_info.zip` (seed=42), expandable to 20k for final run if Colab RAM allows.
+2. **Working dataset size:** 10,000 posts for the primary run, with additional 20k, 50k, and 100k scale benchmarks.
 
 3. **Engagement score (training signal):**  
    `log_engagement_score = log1p(likes + 2×comments) / log1p(followers)`
 
-4. **Evaluation labels:** Per-influencer quintile pseudo-ratings (1–5) from engagement rate, for optional MAE/RMSE.
+4. **Evaluation labels:** Per-influencer quintile pseudo-ratings (1-5) from engagement rate; rating 5 is treated as relevant for top-N evaluation.
 
 5. **Evaluation split:** Time-based — most recent 20% of each influencer's posts held out for test.
 
-6. **Primary ranking metrics:** Precision@5, Recall@5, NDCG@5 (report @3 and @5).
+6. **Primary ranking metrics:** Precision@5, Recall@5, NDCG@5, and Hit Rate@5.
 
 7. **Environment:** Google Colab + Google Drive for data; repo cloned into Drive for team access.
 
@@ -86,38 +86,37 @@ Tasks:
 - [x] Run comparison table: Global | Category | CF | Content-based | Hybrid.
 - [x] Save per-scale results under `artifacts/runs/n{target}/` and comparison under `artifacts/comparisons/`.
 
-**Exit criteria:** Metrics reproducible via `scripts/run_pipeline.py`. Re-run on real 10k Colab data for final report numbers.
+**Exit criteria:** Metrics reproducible via `scripts/run_pipeline.py`.
 
 **Team guide:** [How_It_Works.md](How_It_Works.md) explains the process for teammates.
 
 ---
 
-### Phase 3: Report + Slides (Priority: High)
+### Phase 3: Slides + Submission Narrative — COMPLETE
 
 **Goal:** Submit-ready narrative aligned with rubric.
 
 Tasks:
 
-- [ ] Draft 3-page report using [Final_Submission.md](Final_Submission.md) outline.
-- [ ] Create slides with pipeline diagram, metrics table, and 2 demo influencers.
-- [ ] Add limitations, ethics note (public influencer data, no PII beyond usernames), future work.
-- [ ] Export report to PDF.
+- [x] Create slides with pipeline diagram, metrics table, and 2 demo influencers.
+- [x] Add limitations and future work.
+- [x] Document that the separate final report was waived.
 
 **Exit criteria:** Another student can explain problem, method, and results in 5 minutes using slides alone.
 
 ---
 
-### Phase 4: Polish + Submission (Priority: High)
+### Phase 4: Polish + Submission
 
 **Goal:** Professional repo and complete Canvas upload.
 
 Tasks:
 
-- [ ] Update root README: problem, setup, how to reproduce, dataset links, team names.
-- [ ] Final QA: all rubric sections covered, figures labeled, citations included.
-- [ ] Upload PDF, repo link, slides, dataset link to Canvas.
+- [x] Update root README: problem, setup, how to reproduce, dataset links, team names.
+- [x] Final QA: all rubric sections covered, figures labeled, citations included.
+- [ ] Upload repo link, slides, and dataset link to Canvas.
 
-**Exit criteria:** Submission checklist in Final_Submission.md fully checked.
+**Exit criteria:** Canvas submission complete.
 
 ---
 
@@ -127,7 +126,7 @@ Tasks:
 |--------|-------------------|
 | Samii | Pipeline port, Colab infra, notebook consolidation |
 | Savit | Content-based + hybrid models, hyperparameter tuning |
-| Han | Evaluation module, report draft, slides + figures |
+| Han | Evaluation module, metrics tables, slides + figures |
 
 Rotate review: each PR/notebook section gets a second pair of eyes before merge.
 
@@ -148,7 +147,7 @@ Rotate review: each PR/notebook section gets a second pair of eyes before merge.
 | Colab session crash on 10k parse | Batch parquet writes (already in notebook); lower SAMPLE_SIZE to 5k if needed |
 | Sparse CF matrix | Fall back to category baseline for cold-start influencers; mention in limitations |
 | Hybrid not beating baselines | Report trade-offs honestly; category baseline may win on sparse data — still valid analysis |
-| 3-page limit | One combined table for metrics; move details to repo README |
+| Canvas expectations differ from updated professor guidance | Note that the separate report was waived and submit repo/slides/dataset links |
 | Drive path differs per teammate | Document canonical path in Colab_Setup.md; use `DATA_PATH` variable at top of notebook |
 
 ---
@@ -165,10 +164,10 @@ The original week-by-week plan assumed starting from scratch. Mapped to today:
 | Week 4: Baselines | **Complete** (in notebook) |
 | Week 5: Collaborative filtering | **Complete** (in notebook) |
 | Week 6: Hybrid + ablations | **Complete** (hybrid + scale comparison) |
-| Week 7: Final evaluation + report | **Partial** (metrics done; report/slides pending) |
-| Week 8: Polish + submission | **Not started** |
+| Week 7: Final evaluation + presentation | **Complete** |
+| Week 8: Polish + submission | **Ready for Canvas upload** |
 
-Focus remaining effort on **Phases 3–4** (report, slides, Canvas submission).
+Focus remaining effort on Canvas upload.
 
 ## Related Docs
 
@@ -184,5 +183,5 @@ Focus remaining effort on **Phases 3–4** (report, slides, Canvas submission).
 - [ ] Metrics match recommendation objective (ranking, not just MAE)
 - [ ] Strong baselines included (global + category)
 - [ ] Every modeling choice supported by metric or ablation
-- [ ] Limitations, ethics/privacy note, and future work in report
-- [ ] Repository clean, documented, and runnable from README
+- [x] Limitations and future work in slides
+- [x] Repository clean, documented, and runnable from README
