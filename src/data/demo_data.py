@@ -32,6 +32,43 @@ CAPTION_TEMPLATES = [
     "Morning coffee and planning the day",
 ]
 
+DEMO_CATEGORIES = (
+    "fashion",
+    "travel",
+    "food",
+    "beauty",
+    "family",
+    "fitness",
+    "interior",
+    "pet",
+    "other",
+)
+
+
+def build_demo_influencers(num_influencers: int = 150) -> pd.DataFrame:
+    """Fallback influencer profiles for synthetic runs in a fresh clone."""
+    rows = []
+    for idx in range(num_influencers):
+        category = DEMO_CATEGORIES[idx % len(DEMO_CATEGORIES)]
+        rows.append(
+            {
+                "influencer_name": f"demo_{category}_{idx:03d}",
+                "category": category,
+                "followers": 1_000 + (idx * 1_733) % 450_000,
+                "followees": 100 + (idx * 37) % 4_000,
+                "total_posts": 100 + (idx * 19) % 2_500,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def load_influencers_for_synthetic(influencers_path: str | Path) -> pd.DataFrame:
+    """Load real influencer profiles when available, otherwise use demo profiles."""
+    path = Path(influencers_path)
+    if path.exists():
+        return load_influencers_df(path)
+    return build_demo_influencers()
+
 
 def _pick_bucket(options: tuple[str, ...], rng: random.Random) -> str:
     usable = [value for value in options if not value.startswith("unknown")]
@@ -196,7 +233,7 @@ def build_synthetic_posts_base(
     target_posts: int | None = None,
     seed: int = 42,
 ) -> pd.DataFrame:
-    influencers_df = load_influencers_df(influencers_path)
+    influencers_df = load_influencers_for_synthetic(influencers_path)
     posts_df = generate_synthetic_posts(
         influencers_df,
         num_influencers=num_influencers,
@@ -214,7 +251,7 @@ def build_posts_base_from_parquet_or_synthetic(
     target_posts: int | None = None,
     seed: int = 42,
 ) -> pd.DataFrame:
-    influencers_df = load_influencers_df(influencers_path)
+    influencers_df = load_influencers_for_synthetic(influencers_path) if synthetic else load_influencers_df(influencers_path)
 
     if posts_parquet:
         posts_df = pd.read_parquet(posts_parquet)
