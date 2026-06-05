@@ -124,6 +124,16 @@ artifacts/runs/n10000/figures/model_comparison.png
 
 Default `--target-posts` is **20,000** (output folder `n20000`) if you do not set it explicitly.
 
+### Quick test
+
+Teammates can run the end-to-end smoke test without downloading the full dataset:
+
+```bash
+python -m unittest discover -s tests
+```
+
+The test runs the full synthetic pipeline, trains/evaluates all five models, and verifies that metrics plus figures are written to a temporary output folder.
+
 ---
 
 ## Run on real data (Colab)
