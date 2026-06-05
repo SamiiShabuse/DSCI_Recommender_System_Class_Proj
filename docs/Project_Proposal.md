@@ -179,10 +179,10 @@ docs/                 # Proposal, milestones, submission guide
 | Milestone | Status |
 |-----------|--------|
 | Data access and mapping cleanup | Done |
-| Metadata parsing (10k sample) | Done (`src/preprocess.py` + Colab) |
-| Strategy features + engagement scores | Done (`src/preprocess.py`) |
-| Baselines + user-based CF | Done (`src/baselines.py`, `src/collaborative.py`) |
-| Content-based + hybrid | Done (`src/content_based.py`, `src/hybrid.py`) |
+| Metadata parsing (10k sample) | Done (`src/data/preprocess.py` + Colab) |
+| Strategy features + engagement scores | Done (`src/data/preprocess.py`) |
+| Baselines + user-based CF | Done (`src/models/baselines.py`, `src/models/collaborative.py`) |
+| Content-based + hybrid | Done (`src/models/content_based.py`, `src/models/hybrid.py`) |
 | Formal evaluation metrics | Done (`artifacts/runs/n*/results/model_comparison.csv`) |
 | Scale benchmarks (10k / 20k / 50k) | Done (`artifacts/comparisons/`) |
 | Report + slides | To do (Phase 3) |

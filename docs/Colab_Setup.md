@@ -147,9 +147,9 @@ Or reuse a saved posts base parquet:
 
 Outputs:
 
-- `artifacts/processed/posts_base_*.parquet`
-- `artifacts/results/model_comparison.csv`
-- `artifacts/figures/model_comparison.png`
+- `artifacts/runs/n{target_posts}/processed/posts_base_*.parquet`
+- `artifacts/runs/n{target_posts}/results/model_comparison.csv`
+- `artifacts/runs/n{target_posts}/figures/model_comparison.png`
 
 See [Pipeline.md](Pipeline.md) for module details.
 
@@ -164,4 +164,4 @@ POSTS_INFO_ZIP = DATA_PATH / "Post_metadata" / "posts_info.zip"
 ## Notes
 
 - If metadata is not present yet, run `python scripts/run_pipeline.py --synthetic` locally for a smoke test.
-- Large processed parquets stay gitignored; copy final metrics CSV to repo or Drive for the report.
+- Large processed parquets stay gitignored; final metrics CSVs and figures are saved under `artifacts/runs/n{target_posts}/`.

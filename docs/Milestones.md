@@ -9,12 +9,12 @@ This plan reflects the final repo state for the DSCI351 project submission.
 | Problem definition | **Done** | Proposal + locked strategy label |
 | Influencer data loaded | **Done** | `data/influencers.txt` (33,935 rows) |
 | Mapping data cleaned | **Done** | `data/clean_json_image_mapping.parquet` |
-| Metadata parsing pipeline | **Done** | `src/preprocess.py` + Colab notebooks |
-| Feature engineering | **Done** | `src/preprocess.py` |
-| Global + category baselines | **Done** | `src/baselines.py` |
-| User-based CF | **Done** | `src/collaborative.py` |
-| Content-based recommender | **Done** | `src/content_based.py` |
-| Hybrid model | **Done** | `src/hybrid.py` |
+| Metadata parsing pipeline | **Done** | `src/data/preprocess.py` + Colab notebooks |
+| Feature engineering | **Done** | `src/data/preprocess.py` |
+| Global + category baselines | **Done** | `src/models/baselines.py` |
+| User-based CF | **Done** | `src/models/collaborative.py` |
+| Content-based recommender | **Done** | `src/models/content_based.py` |
+| Hybrid model | **Done** | `src/models/hybrid.py` |
 | Train/test split + metrics | **Done** | `src/evaluation.py` → `artifacts/runs/n*/results/` |
 | Scale benchmarks (10k / 20k / 50k) | **Done** | `artifacts/comparisons/` |
 | Reproducible pipeline | **Done** | `scripts/run_pipeline.py`, `run_scale_benchmark.py` |
@@ -59,11 +59,11 @@ Tasks:
 
 - [x] Expand `requirements.txt` (pandas, numpy, scikit-learn, pyarrow, tqdm, matplotlib).
 - [x] Port notebook functions into modules:
-  - `src/preprocess.py` — parse metadata, build strategy labels, engagement scores
-  - `src/baselines.py` — global and category recommenders
-  - `src/collaborative.py` — interaction matrix + user-based CF
-  - `src/content_based.py` — TF-IDF caption → strategy recommendations
-  - `src/hybrid.py` — weighted combination
+  - `src/data/preprocess.py` — parse metadata, build strategy labels, engagement scores
+  - `src/models/baselines.py` — global and category recommenders
+  - `src/models/collaborative.py` — interaction matrix + user-based CF
+  - `src/models/content_based.py` — TF-IDF caption → strategy recommendations
+  - `src/models/hybrid.py` — weighted combination
   - `src/evaluation.py` — time split, Precision@K, Recall@K, NDCG@K
 - [x] Consolidate notebooks: `notebooks/Recommender Pipeline and Model Development.ipynb` (legacy notebooks kept as the development audit trail).
 - [x] Document pipeline in `docs/Pipeline.md` and updated README.
@@ -80,7 +80,7 @@ Tasks:
 Tasks:
 
 - [x] Implement **content-based** recommender (TF-IDF on captions).
-- [x] Implement **hybrid** with tuned α (`src/hybrid.py`).
+- [x] Implement **hybrid** with tuned alpha (`src/models/hybrid.py`).
 - [x] Build time-based train/test split per influencer.
 - [x] Define relevant test items as pseudo-rating ≥ 5.
 - [x] Run comparison table: Global | Category | CF | Content-based | Hybrid.

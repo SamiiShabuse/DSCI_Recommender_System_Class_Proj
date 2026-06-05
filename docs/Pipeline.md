@@ -29,7 +29,7 @@ flowchart TD
 | Extracted metadata | `--extracted-metadata-dir PATH` | After 7zip sample extraction in Colab |
 | Processed parquet | `--posts-parquet PATH` | Reuse `posts_base_10000.parquet` from Colab |
 
-All modes require `data/influencers.txt` (or equivalent path via `--data-dir`).
+Synthetic mode can run without local dataset files because it falls back to built-in demo influencer profiles. Real metadata and data-inspection scripts require `data/influencers.txt` (or an equivalent path via `--data-dir`).
 
 ## Content Strategy Label
 
@@ -87,7 +87,7 @@ Alpha is tuned over `{0.3, 0.5, 0.7}` using hit-rate@K on a validation split car
 - **Split:** Time-based — last 20% of each influencer's posts → test
 - **Relevant items:** Strategies with pseudo-rating ≥ 5 in test
 - **Metrics:** Precision@K, Recall@K, NDCG@K, Hit-rate@K
-- **Output:** `artifacts/results/model_comparison.csv`
+- **Output:** `artifacts/runs/n{target_posts}/results/model_comparison.csv`
 
 ## Standard Outputs
 
@@ -96,18 +96,18 @@ After `python scripts/run_pipeline.py`, outputs are written to the per-scale run
 ```
 artifacts/
   runs/n{target_posts}/
-  processed/
-    posts_base_{n}.parquet
-    strategy_scores_{n}.parquet
-    category_strategy_scores_{n}.parquet
-    interaction_matrix_{n}.parquet
-    user_similarity_{n}.parquet
-  results/
-    model_comparison.csv
-    split_summary.txt
-  figures/
-    model_comparison.png
-    engagement_by_category.png
+    processed/
+      posts_base_{n}.parquet
+      strategy_scores_{n}.parquet
+      category_strategy_scores_{n}.parquet
+      interaction_matrix_{n}.parquet
+      user_similarity_{n}.parquet
+    results/
+      model_comparison.csv
+      run_summary.txt
+    figures/
+      model_comparison.png
+      engagement_by_category.png
 ```
 
 Processed parquets are gitignored (large). Per-scale results and comparison charts live under:

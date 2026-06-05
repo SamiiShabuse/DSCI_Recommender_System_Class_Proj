@@ -91,7 +91,7 @@ flowchart TD
 ### Step 1 — Load posts
 
 - **Colab (real data):** Parse `.info` JSON files from extracted `posts_info.zip` sample
-- **Local (synthetic):** Generate fake posts using real usernames/categories/followers from `influencers.txt`
+- **Local (synthetic):** Generate fake posts using real usernames/categories/followers from `influencers.txt` when available, or built-in demo profiles in a fresh clone
 
 ### Step 2 — Strategy labels
 
@@ -128,7 +128,7 @@ This matches the proposal: realistic “recommend before the next post.”
 | 2 | **Category baseline** | Best strategies within fashion / travel / food / etc. |
 | 3 | **User-based CF** | Find similar influencers; recommend strategies that worked for them |
 | 4 | **Content-based** | Similar captions in training → recommend those posts’ strategies |
-| 5 | **Hybrid** | Weighted mix of CF + content-based (α tuned on validation users) |
+| 5 | **Hybrid** | Weighted mix of CF + content-based (alpha tuned on a training-period validation split) |
 
 These are **classical recommender algorithms**, not deep learning models trained for many epochs.
 
@@ -156,7 +156,7 @@ We ran three **scale benchmarks** to answer:
 
 1. Does the code work at larger sizes?
 2. How do metrics change with more posts?
-3. Can we document scalability for the report?
+3. Can we document scalability for the final presentation and repo?
 
 | Run | Folder | Posts | Runtime (synthetic, local) |
 |-----|--------|-------|----------------------------|
@@ -232,10 +232,10 @@ See [Colab_Setup.md](Colab_Setup.md).
 No. We use a **sample of posts** (10k+). Each post links to one influencer. More posts usually means more influencers represented, not “all influencers.”
 
 **Q: What is synthetic data?**  
-Locally we **simulate** posts (likes, captions, strategies) using **real** influencer names and follower counts. Good for testing code. **Not** a substitute for real Instagram captions in the final write-up.
+Locally we **simulate** posts (likes, captions, strategies), using real influencer profiles when `data/influencers.txt` is available and built-in demo profiles otherwise. Good for testing code. **Not** a substitute for real Instagram captions if we prepare extra analysis beyond the required slides/repo.
 
 **Q: Why did global baseline win at 50k but hybrid win at 10k?**  
-Different data sizes change matrix density and signal strength. That’s a valid **finding** to discuss in the report — not a bug.
+Different data sizes change matrix density and signal strength. That’s a valid **finding** to discuss in the presentation — not a bug.
 
 **Q: Did we implement collaborative filtering + content-based + hybrid?**  
 Yes, all five are in `src/` and appear in every `model_comparison.csv`.

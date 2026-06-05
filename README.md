@@ -162,7 +162,7 @@ If you prepare an additional narrative beyond the required slides/repo, prefer n
 ```
 Raw input (synthetic / metadata / parquet)
         ↓
-  preprocess.py — parse posts, build strategy labels, engagement scores
+  src/data/preprocess.py — parse posts, build strategy labels, engagement scores
         ↓
   posts_base parquet — one row per post with features
         ↓
@@ -226,7 +226,7 @@ Each folder has a README with more detail:
 | Category baseline | `src/models/baselines.py` | Top strategies within the influencer's category |
 | User-based CF | `src/models/collaborative.py` | Cosine similarity on influencer × strategy matrix |
 | Content-based | `src/models/content_based.py` | TF-IDF caption similarity to strategy profiles |
-| Hybrid | `src/models/hybrid.py` | Weighted blend of CF + content-based (α tuned on validation users) |
+| Hybrid | `src/models/hybrid.py` | Weighted blend of CF + content-based (α tuned on a training-period validation split) |
 
 ---
 
@@ -257,7 +257,7 @@ Local `data/` contents are gitignored except [data/README.md](data/README.md). D
 
 | Issue | Fix |
 |-------|-----|
-| `FileNotFoundError: influencers.txt` | Download `influencers.txt` into `data/` (see [data/README.md](data/README.md)) |
+| `FileNotFoundError: influencers.txt` | Synthetic runs do not require this file. If running real-data or data-inspection scripts, download `influencers.txt` into `data/` (see [data/README.md](data/README.md)) |
 | Pipeline runs but metrics look empty | Check `evaluated_users` in `model_comparison.csv`; need influencers with enough posts in train and test |
 | Out of memory on real metadata | Use Colab and cap with `--target-posts 10000`, or use `--posts-parquet` from a prior Colab run |
 | Want to inspect raw data first | `python scripts/dataset_summary.py` and `python scripts/preview_dataset.py` |
