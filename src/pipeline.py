@@ -168,6 +168,9 @@ def aggregate_scale_comparisons(artifacts_dir: Path) -> dict[str, Path]:
             continue
 
         target_posts = int(run_dir.name.removeprefix("n"))
+        if target_posts < 10_000:
+            continue
+
         results_df = pd.read_csv(results_path)
         results_df.insert(0, "target_posts", target_posts)
         model_frames.append(results_df)

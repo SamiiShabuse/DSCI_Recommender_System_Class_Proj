@@ -1,5 +1,5 @@
 target_posts,run_dir,posts_total,train_posts,test_posts,unique_influencers,unique_strategies,k,hybrid_alpha,runtime_seconds,best_model,best_ndcg_at_k
-10000,C:\Users\sshab\Documents\School\DSCI351\DSCI_Recommender_System_Class_Proj\artifacts\runs\n10000,10000,8000,2000,500,144,5,0.3,29.5,hybrid,0.0324844709771387
+10000,C:\Users\sshab\Documents\School\DSCI351\DSCI_Recommender_System_Class_Proj\artifacts\runs\n10000,10000,8000,2000,500,144,5,0.3,27.4,hybrid,0.0324844709771387
 100000,C:\Users\sshab\Documents\School\DSCI351\DSCI_Recommender_System_Class_Proj\artifacts\runs\n100000,100000,80000,20000,5000,144,5,0.3,1942.4,global_baseline,0.054061051752717
 20000,C:\Users\sshab\Documents\School\DSCI351\DSCI_Recommender_System_Class_Proj\artifacts\runs\n20000,20000,16000,4000,1000,144,5,0.3,98.0,hybrid,0.0199651688521941
 50000,C:\Users\sshab\Documents\School\DSCI351\DSCI_Recommender_System_Class_Proj\artifacts\runs\n50000,50000,40000,10000,2500,144,5,0.3,495.5,global_baseline,0.0541790716695451

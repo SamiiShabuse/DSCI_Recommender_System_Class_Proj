@@ -163,21 +163,23 @@ def evaluate_all_models(
     artifacts = build_model_artifacts(train_df)
 
     if hybrid_alpha is None:
+        alpha_train_df, alpha_val_df = time_based_split(train_df)
+        alpha_artifacts = build_model_artifacts(alpha_train_df)
         relevance_map = {
             influencer: relevant_strategies_from_test(group, min_rating=min_rating)
-            for influencer, group in test_df.groupby("influencer_name")
+            for influencer, group in alpha_val_df.groupby("influencer_name")
         }
         val_users = [
             user
             for user, rel in relevance_map.items()
-            if rel and user in artifacts["interaction_matrix"].index
+            if rel and user in alpha_artifacts["interaction_matrix"].index
         ]
         if val_users:
             hybrid_alpha = tune_hybrid_alpha(
                 val_users[: min(25, len(val_users))],
-                artifacts["interaction_matrix"],
-                artifacts["user_similarity_df"],
-                artifacts["content_recommender"],
+                alpha_artifacts["interaction_matrix"],
+                alpha_artifacts["user_similarity_df"],
+                alpha_artifacts["content_recommender"],
                 relevance_map,
                 k=k,
             )

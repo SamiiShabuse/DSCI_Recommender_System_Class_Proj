@@ -80,7 +80,7 @@ Same as global, but filtered to the influencer's category (fashion, travel, etc.
 score = α × normalized(CF) + (1 − α) × normalized(content)
 ```
 
-α is tuned over `{0.3, 0.5, 0.7}` using hit-rate@K on a validation subset of test influencers.
+Alpha is tuned over `{0.3, 0.5, 0.7}` using hit-rate@K on a validation split carved from the training period. The final held-out test posts are used only for evaluation.
 
 ## Evaluation (`src/evaluation.py`)
 
@@ -91,10 +91,11 @@ score = α × normalized(CF) + (1 − α) × normalized(content)
 
 ## Standard Outputs
 
-After `python scripts/run_pipeline.py`:
+After `python scripts/run_pipeline.py`, outputs are written to the per-scale run directory:
 
 ```
 artifacts/
+  runs/n{target_posts}/
   processed/
     posts_base_{n}.parquet
     strategy_scores_{n}.parquet
@@ -165,4 +166,4 @@ python scripts/run_pipeline.py \
 - **CF** needs enough overlapping influencers; sparse matrices may underperform — note in limitations
 - **Hybrid** combines personalization (CF) with caption signal (content-based)
 
-Use `artifacts/results/split_summary.txt` for dataset sizes and chosen hybrid α in the report.
+Use `artifacts/runs/n*/results/run_summary.txt` for dataset sizes, runtime, and chosen hybrid alpha.
