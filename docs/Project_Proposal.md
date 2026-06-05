@@ -169,7 +169,7 @@ src/
   hybrid.py           # Weighted hybrid
   evaluation.py       # Splits and metrics
 notebooks/
-  01_pipeline_and_models.ipynb
+  Recommender Pipeline and Model Development.ipynb
 artifacts/            # Processed data and results (gitignored)
 docs/                 # Proposal, milestones, submission guide
 ```

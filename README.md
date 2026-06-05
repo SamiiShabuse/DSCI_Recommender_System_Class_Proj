@@ -59,7 +59,7 @@ Dependencies: `pandas`, `numpy`, `scikit-learn`, `pyarrow`, `tqdm`, `matplotlib`
 | **See results without running code** | Open pre-computed metrics below |
 | **Run the full pipeline locally** | Follow [Run locally (synthetic)](#run-locally-synthetic) |
 | **Run on real Instagram metadata** | Follow [Run on real data](#run-on-real-data-colab) |
-| **Step through interactively** | Open [notebooks/01_pipeline_and_models.ipynb](notebooks/01_pipeline_and_models.ipynb) |
+| **Step through interactively** | Open [notebooks/Recommender Pipeline and Model Development.ipynb](<notebooks/Recommender Pipeline and Model Development.ipynb>) |
 
 ---
 
@@ -201,7 +201,7 @@ Each folder has a README with more detail:
 |--------|--------|----------|
 | `src/` | [src/README.md](src/README.md) | `data/` (preprocess), `models/` (5 recommenders), `pipeline.py`, `evaluation.py` |
 | `scripts/` | [scripts/README.md](scripts/README.md) | CLI entry points (`run_pipeline.py`, benchmarks, data tools) |
-| `notebooks/` | [notebooks/README.md](notebooks/README.md) | Jupyter notebooks (primary: `01_pipeline_and_models.ipynb`) |
+| `notebooks/` | [notebooks/README.md](notebooks/README.md) | Jupyter notebooks (primary: `Recommender Pipeline and Model Development.ipynb`) |
 | `docs/` | [docs/README.md](docs/README.md) | Proposal, pipeline guide, submission checklist, Colab setup |
 | `data/` | [data/README.md](data/README.md) | Raw dataset files (gitignored) and dataset snapshot |
 | `artifacts/` | — | Generated metrics, figures, and processed tables |

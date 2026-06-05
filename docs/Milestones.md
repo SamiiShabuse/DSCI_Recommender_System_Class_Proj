@@ -65,7 +65,7 @@ Tasks:
   - `src/content_based.py` — TF-IDF caption → strategy recommendations
   - `src/hybrid.py` — weighted combination
   - `src/evaluation.py` — time split, Precision@K, Recall@K, NDCG@K
-- [x] Consolidate notebooks: `notebooks/01_pipeline_and_models.ipynb` (legacy notebooks kept for reference).
+- [x] Consolidate notebooks: `notebooks/Recommender Pipeline and Model Development.ipynb` (legacy notebooks kept as the development audit trail).
 - [x] Document pipeline in `docs/Pipeline.md` and updated README.
 - [x] Save processed outputs to `artifacts/processed/` (gitignored).
 

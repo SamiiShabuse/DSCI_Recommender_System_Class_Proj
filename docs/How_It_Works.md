@@ -20,7 +20,7 @@ For technical commands and file paths, see [Pipeline.md](Pipeline.md). For the o
 | Engagement score + pseudo-ratings | Done | `src/data/preprocess.py`, `src/evaluation.py` |
 | Time-based train/test split (last 20% per influencer) | Done | `src/evaluation.py` |
 | Precision@K, Recall@K, NDCG@K comparison table | Done | `artifacts/runs/n*/results/model_comparison.csv` |
-| Reproducible pipeline | Done | `scripts/run_pipeline.py`, `notebooks/01_pipeline_and_models.ipynb` |
+| Reproducible pipeline | Done | `scripts/run_pipeline.py`, `notebooks/Recommender Pipeline and Model Development.ipynb` |
 | 2 qualitative case studies in slides | Done | `docs/Final Presentation.pptx` |
 | Presentation slides | Done | `docs/Final Presentation.pptx` |
 | Final report | Waived | Professor said a separate final report is no longer required |
@@ -185,7 +185,7 @@ DSCI_Recommender_System_Class_Proj/
 │   ├── run_pipeline.py            # Single run at one scale
 │   └── run_scale_benchmark.py     # 10k + 20k + 50k + comparison
 ├── notebooks/
-│   └── 01_pipeline_and_models.ipynb   # Main notebook (VS Code or Colab)
+│   └── Recommender Pipeline and Model Development.ipynb   # Main notebook (VS Code or Colab)
 └── artifacts/
     ├── runs/
     │   ├── n10000/                # One scale — not overwritten
