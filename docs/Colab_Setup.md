@@ -140,7 +140,7 @@ Or reuse a saved posts base parquet:
 
 ```bash
 !python scripts/run_pipeline.py \
-  --posts-parquet "/content/drive/MyDrive/dsci351_artifacts/processed/posts_base_10000.parquet" \
+  --posts-parquet "/content/drive/MyDrive/dsci351_artifacts/runs/n10000/processed/posts_base_10000.parquet" \
   --output-dir "/content/drive/MyDrive/dsci351_artifacts" \
   --k 5
 ```

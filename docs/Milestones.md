@@ -67,7 +67,7 @@ Tasks:
   - `src/evaluation.py` — time split, Precision@K, Recall@K, NDCG@K
 - [x] Consolidate notebooks: `notebooks/Recommender Pipeline and Model Development.ipynb` (legacy notebooks kept as the development audit trail).
 - [x] Document pipeline in `docs/Pipeline.md` and updated README.
-- [x] Save processed outputs to `artifacts/processed/` (gitignored).
+- [x] Save processed outputs to `artifacts/runs/n*/processed/` (gitignored).
 
 **Exit criteria:** `python scripts/run_pipeline.py --synthetic` → metrics table without manual edits.
 

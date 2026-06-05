@@ -141,7 +141,7 @@ Or save `posts_base_10000.parquet` from the notebook and rerun:
 
 ```bash
 python scripts/run_pipeline.py \
-  --posts-parquet "/content/drive/MyDrive/dsci351_artifacts/processed/posts_base_10000.parquet"
+  --posts-parquet "/content/drive/MyDrive/dsci351_artifacts/runs/n10000/processed/posts_base_10000.parquet"
 ```
 
 ## Module Reference
